@@ -1,0 +1,676 @@
+December 19, 2021
+
+I think the right strategy for this course might be to watch the entire section without 
+pausing, then do all the readings, and then go back and watch the section and take notes and
+do the exercises.
+
+Actually before we actually start the course, let's do a deep dive into how Bitcoin actually
+works.
+
+Here's a good YT resource to understand transactions under the hood: https://www.youtube.com/watch?v=Em8nJN8IEes
+
+
+PRIVATE KEY 
+Private keys are basically a randomly generated, 256 bit number. There are an unfathomable 
+number of these keys. There are some requirements though I think. Like I'm pretty sure that 
+the base58 version of the 256 bit number is 52 digits long and needs to start with a 5 or 
+something. This format makes the keys shorter and easier to check against typos.
+
+Different services exist to randomly generate these keys. Once you have a private key, you 
+can determine the public key and address by just running it through some algorithms. So 
+it's all deterministically linked. However, you can't get the private key back using the 
+public key. And you can't get the private key back using the address.
+
+The private key is everything. If you don't know the private key, the account is lost 
+forever. The private key is what digitally signs transactions. It's what is used to derive 
+the public key and the address. It's the first piece of the puzzle.
+
+The whole point of this private key, public key, address thing is that there is no central 
+server to register accounts or account values or whatever. What Bitcoin software does is 
+basically enable any valid string of characters (private key), and linked public key and 
+address, to collectively participate as a unit within the Bitcoin system. The Bitcoin blockchain 
+is able to note which particular imaginary coins are associated with which units. Further, 
+it is able to note the entire history of transaction among units and future transactions 
+among units. New units need only to send/receive imaginary coins through a valid transaction 
+to be added in to a block and thus become part of the system. There's a predetermined 
+number of total possible keys, so all these accounts are just sitting there, waiting to be 
+involved in the process.
+
+Bitcoin, largely, is just a computer, composed of several nodes, all working together to 
+a collective computation. 
+
+
+
+PUBLIC KEY 
+For Bitcoin, you run the private key through the ECDSA algorithm to create the public key
+(basically an algorithm where you take the x and y coordinates of a point on a elliptic
+curve). You can't reverse engineer the public key back to the private. These keys are also 
+256 bits long.
+
+Different cryptocurrencies have different protocols to determine the public key and public 
+address. For example, Ethereum uses the same algorithm as Bitcoin to derive the 
+public key from the private, but uses a different process to go from public key to address.
+
+The public key is broadcast widely, and is used by anyone who wants to verify your digital 
+signature on a transaction. 
+
+
+ADDRESS
+Then you run the public key through the SHA-256 algorithm, and then the RIPEMD-160 algorithm, 
+and a few more mathematical tweaks, to get the address associated with your account. However, 
+the process of turning a public key into an address is different for Ethereum. Your address 
+is 160 bits long, vs. the 256 in your public/private keys.
+
+Anyone can see the transaction history and account balance of any address. But you can only 
+interact with those coins if you have the private key. 
+
+
+DIGEST 
+The ouput of a cryptographic hash function is often called a digest. 
+
+
+SHA-1
+This is a famous cryptographic hash function that maps inputs to a digest of 160 bits. So 
+there are 2^160 different SHA-1 digest possible. For refence there are about 2^65 grains 
+of sand on Earth. So it'd be way way easier to find a particular grain of sand on Earth than 
+it would be for there to be a collision using the SHA-1 algorithm. Actually if there were 
+a planet for each grain of sadn on Earth, it'd still be easier to find one grain of sand
+from those planets than it would be for there to be a collision via SHA-1. But shattered.io 
+showed that they could systematically create collisions on SHA-1. So the function is kind 
+of broken in that sense. 
+
+
+SHA-2 and SHA-3
+Similar to the above, but they map to more bits between 220 and 500 bits in the digest. 
+
+
+MD5 & MD6 
+Other algorithms. MD5 prob not super secure anymore. 
+
+
+ASYMMETRIC ENCRYPTION
+Public-private key encryption is basically where you have two keys. They're mathematically 
+related to one another. They're recipricals, functionally. Both prime numbers. The public
+key is shared widely. When people want to send an encrypted message to someone else, they 
+use the receiver's public key to encrypt the data. Once the data are encrypted, it can 
+only be decrypted by using the private key, which only the receiver will have. You cannot 
+guess the private key based off the public key. The public key encrypts, and the private 
+key flips it back. This is functionally how WhatsApp works. Also HTTPS.
+
+
+DIGITAL SIGNATURE
+Digital signatures provide a way to verify the authenticity of the sender of a document. 
+Digital signitures are 256 bits long. So the possiblity of forgery are infinitesimal. 
+
+This is basically where we take some data. Then hash it. Through any type of hash function, 
+MD5, SHA-1, whatever. Then we encrpyt the hash against our private key. This is our signature
+for that particular piece of data. So now we can provide the original data or document or 
+whatever, along wiht our signature of it, and then other people can verify that the document 
+did indeed come from us because they can decrypt the signature using our public key and will 
+see that the output matches the output of hashing the document. 
+
+The same user will have several different digital signatures for each document/data input,
+because each message, or transaction, will be different.
+
+
+HASH FUNCTION
+Any function that can be used to map data of arbitrary size to fixed-size values. The 
+values returned by a hash function are called hash values, hash codes, digests, or simply 
+hashes. The values are usually used to index a fixed-size table called a hash table. Use 
+of a hash function to index a hash table is called hashing. Hash functions should be one 
+way, that is, you shouldn't be able to reverse a digest back to the input. A good hash
+function should be:
+1. Efficiently computable
+2. Uniformly distribute keys 
+
+So like a hash function for phone numbers could just use the last 3 digits for the key, but 
+not the first three digits. Because it won't be equally distributed because there are a lot 
+more phones numbers in particular area codes than others. 
+
+There are other aspects of hash functions, like you might want to make sure that slightly 
+similar inputs still map to different outputs. Or you might want to make sure that 
+permutations of the same characters still map to different outputs, etc. There's also 
+the division and multiplication techniques, which are basically you just take the mod 
+of some table_size to get the particular bucket you're going to route to. Or for 
+multiplication you multiply by some randomnumber between 0-1, then multiply by table_size 
+and apply the floor function to land on an integer. There's some logc about using a prime 
+number for the table size etc. 
+
+
+CRYPTOGRAPHIC HASH FUNCTION
+Every cryptographic hash function is a hash function. But not every hash function is a 
+cryptographic hash. A cryptographic hash function aims to guarantee a number of security 
+properties. Most importantly that it's hard to find collisions or pre-images and that the
+output appears random. (There are a few more properties, and "hard" has well defined
+bounds in this context, but that's not important here.) Non cryptographic hash functions 
+just try to avoid collisions for non malicious input. Some aim to detect accidental 
+changes in data (CRCs), others try to put objects into different buckets in a hash table 
+with as few collisions as possible. In exchange for weaker guarantees they are typically 
+(much) faster. I'd still call MD5 a cryptographic hash function, since it aimed to provide 
+security. But it's broken, and thus no longer usable as a cryptographic hash. On the other
+hand when you have a non cryptographic hash function, you can't really call it "broken", 
+since it never tried to be secure in the first place.
+
+
+BITCOIN
+So yeah you know the whole story, Satoshi, etc.
+
+
+TRANSACTIONS
+Transactions are what happen when ownership of bitcoins is tranferred from one unit to 
+another unit. Transactions have IDs (hash values), Metadata (# inputs/outputs, file 
+size, etc.), Inputs, Script-signatures, and Outputs. There can be multiple inputs and
+multiple outputs in each transaction. Transactions are functinoally just JSON objects.
+
+
+TRANSACTION ID is just the SHA-256 hash of the SHA-256 hash of the entire transaction 
+data.
+
+
+INPUTS of a transaction specify which bitcoins are to be transferred. This is done by
+naming the transaction ID or IDs (hashes) of the previous transactions that the coins
+came from. 
+
+
+SCRIPT-SIGNATURE: For each source transaction, there is a corresponding scriptSig. The 
+scriptSigs are tuples of the unit's public key and the unit's digital signature on the 
+source transaction. These values are used to confirm that you know the public key which 
+was the intended target of the source transactions and that you also know the private 
+key associated with the public key. If you decrypt the digital signature using the public 
+key, you should arrive at the source transaction. As mentioned, each input has its own 
+scriptSig tuple.
+
+
+OUTPUTS are the amount of coins to be sent, and the script that should be run by the 
+receiver in order to use those coins in a future transaction for themself. Thus, the 
+inputs of a transaction are the outputs of previous transactions.
+
+
+E2E EXAMPLE
+Basically, if user A gets sent .5 bitcoin from user B and gets sent .7 bitcoin from user C, 
+they now have 1.2 bitcoins associated with their unit. When user B and user C sent their 
+transactions to user A, they included the number of bitcoins they wanted to transfer, 
+in addition to a script (called a "scriptPubKey") that needs to be run by user A when user 
+A decides to use those coins (transfer ownership to a different unit). But technically, 
+what users B & C actually did was publicly provide instructions on how to claim ownership 
+of those coins in the blockchain. But the only way anyone can claim those coins was if 
+they knew the corresponding private key. And presumably only User A would know that key, 
+so functionally they sent the coins to user A. Make sense?
+
+So now if user A decides to send 1 bitcoin to user D (from their total of 1.2 coins), they 
+have to prove that they are allowed to send those coins, i.e. they have to prove that 
+they own those coins. How? Well they have to successfully run the scripts included in the 
+outputs of the transactions sent by users B & C. Here's what needs to be done:
+1. User A hashes their public key
+2. User A ensures that the hash matches the value sent in the script from User B (this hash value is included in plain text as part of the script)
+3. User A encrypts the source transaction (source of the coins) using their private key
+4. User A demonstrates that they can decrypt this signature using their public key back to the source transaction
+5. User A repeats steps 3 & 4 for user C's source transaction
+
+So if User A is successful here, that means that they know the public key which the sender
+was trying to send to, and that they also know the private key associated with that public 
+key. So they own the coins and can use them.
+
+Great, so user A wants to send 1 bitcoin to user D, and they've managed to prove that 
+they own the coins that they want to send. Now they specify how many coins they want to
+send and the script that needs to be run in order for a future user to claim the
+coins. The script will require the same algorithm that user A ran to verify their own coins,
+the only thing that changes in each script is the hash value that needs to be matched. When user 
+A sends user D the payment, presumably user D sent user A their address. User A can derive 
+the hash of user D's public key from user D's address by base58 decoding it, dropping the 
+version byte in the beginning, and dropping the 4 checksum bytes at the end. This is the 
+value that's included in the script. So now user A sends all this as a completed 
+transaction out to be mined into a block.
+
+Actually before this, user A will also have to specify another output, which will function 
+as a sort of refund output. So user A specifies 1 bitcoin will be sent to user D, and also 
+that .15 bitocoin will be sent back to user A. This is functionally a "refund output", and 
+is done for design simplicity purposes. The remaining .05 bitcoin will be used as the fee 
+paid to the block miner. Now that the transaction is complete, the bitcoin software runs 
+the entire transaction data through the SHA-256 algorithm twice. This becomes the 
+transaction ID (hash) of the transaciton. And now this transaction is finally ready to be 
+sent out into the world to be validated by a miner. 
+
+Thus, the final transaction will include:
+1. The transaction ID (hash)
+2. Metadata (number of inputs, number of outputs, transaction size, etc.)
+3. The transaction ID of user B's source transaction (as an input)
+2. The scriptSig for user B's source transaction (which includes user A's public key and 
+    user A's digital signature on user B's source transaction)
+3. The transaction ID of user C's source transaction (as an input)
+4. The scriptSig for user C's source transaction (which includea user A's public key and 
+    user A's digital signature on user C's source transaction)
+5. The number of coins being sent to user D and the script that'd need to be run in the 
+    future in order for user D to verify they owned the coins (as an output)
+6. The number of coins being sent back to user A and the script that'd need to be run in 
+    the future in order for user A to verify they owned the coins (as an output)
+
+This is a common structure: multiple inputs, and two outputs. One for the receiver and one 
+as a refund to the payer. But there's no reason you couldn't include several other outputs 
+as well if you wanted to pay multiple accounts in the same transaction. It'll just be a 
+larger file size to presumably will require a higher fee?
+
+Note that when payments are made on Bitcoin, the public key of the receiver is never stated 
+anywhere in the transaction, only the hash of their public key. The public key isn't 
+revealed until the receiver makes a transaction in the future and tries to send those 
+coins to another address. 
+
+
+QUANTUM COMPUTING 
+There's a lot to discuss here, but we'll keep it short for the purposes of this section. 
+Basically quantum computing will make it a lot easier for hackers to guess private keys 
+that could be valid accounts. So Bitcoin and other crypto currencies will have to adapt to 
+keep pace with these advancements. Which will likely mean new forks for new protocols that 
+have some sort of quantum encryption strategy. There's been talk about including such 
+strategies in Etherium 3.0 (Ethereum 2.0 is about to launch). 
+
+
+DETERMINISTIC WALLETS
+In the cryptocurrency world, wallets contain keys instead of coins. As discussed the keys 
+are generated randomly. To strengthen privacy one could create a new public-private key pair 
+for each new transaction. So your wallet would tell you how much total coins you control 
+but each address you own wouldn't be able to be linked together by anyone else. This can 
+get difficult to manage though. Deterministic wallets were created to offer a solution, 
+one in which all keys can be traced back to an original random seed, usually a set of 
+random words, and a hash function. With a deterministic wallet, the original seed is enough 
+to recover all private and public keys, therefore requiring only a single backup at the 
+time of creation.
+
+
+HIERARCHICAL DETERMINISTIC WALLETS
+HD Wallets are the most advanced type of deterministic wallet. They contain keys in a tree 
+structure, in which parent keys can produce children keys, which can produce grandchildren 
+keys, and so on, infinitely. The cryptocurrency holder can use the tree structure to 
+organize transactions by type of transaction or by entity involved, such as departments or 
+subsidiaries. Like simple deterministic wallets, all HD wallets are created from a single 
+master root seed, usually represented by a mnemonic word sequence, which makes it easier 
+for account holders to transcribe and store. HD wallets generally have a master key pair: 
+an extended public key (XPUB) and an extended private key (XPRIV). The XPRIV generates all 
+the private keys, while the XPUB can show the balances of all the public keys within the 
+wallet. 
+
+In a HD wallet, the master key pair serves as the foundation, which then branches off into 
+private keys for different cryptocurrencies — and from there goes to key pairs for each 
+transaction. HD crypto wallets offer stronger privacy than ND wallets because key pairs are 
+derived automatically for every transaction. Because Bitcoin and other blockchains are 
+public ledgers, address balances are public knowledge. However, as you have multiple 
+addresses, others may not know which addresses are linked to you and which aren’t — 
+provided you haven’t shared your XPUB. Your XPUB can show all of your balances, and 
+therefore should never be shared.
+
+Beyond privacy, HD wallets offer enhanced security because every transaction received is on 
+a different address. Someone would need multiple private keys to access your wallet’s 
+multiple crypto balances. So as long as you haven’t shared your XPRIV, your funds should 
+be secure. And most HD wallets make it difficult, if not impossible, to share confidential 
+information such as your master key pair.
+
+Another improvement to HD wallets came with Bitcoin Improvement Proposal (BIP) 39, which 
+allowed users to store their master key pairs — and hence their whole wallets — as a 
+recovery phrase. A recovery phrase is typically a 12-, 18-, or 24-word phrase that must be 
+recorded sequentially and stored safely as a back-up in case you lose access to your wallet 
+or it stops working. This phrase will let you regenerate your wallet and all associated 
+crypto balances. For this reason, it must be stored offline as an absolute secret. If you 
+lose your recovery phrase  — and lose your wallet or forget your PIN — your funds could be 
+lost forever.
+
+
+SCRIPT PUB KEY 
+These are the scripts that have to be successfully run in order for a future user to claim 
+the coins in the transaction. 
+
+
+BITCOIN CONTRACTS
+These scripts don't have to specify a particular public key hash value though. So presumably 
+you could specify a script that could be run by anybody who's able to solve it, like a 
+puzzle or something, and the reward is the coins in the transaction. Or you could specify 
+2 public key hashes, so that in order for these coins to be redeemed, two different users 
+have to agree to send those coins to a different address. Or you could specify 3 hashes but 
+only require 2 of those 3 users to agree in order to send those payments onwards. Or you 
+could specify that they could only be redeemed pending certain events happening in the 
+real world. Etc. You can go on the bitcoin wiki to take a look at all the different 
+operators that can be used to create particular specifications that you want to be satisfied 
+before someone can claim the coins in your transaction.
+
+
+P2PK
+Pay to public key
+
+
+P2PKH 
+Pay to public key hash 
+
+
+COINBASE TRANSACTION 
+In each block there is a coinbase tranasaction. This is the first transaction included in 
+the block and it specifies where to send the block reward to compensate the miner for 
+successfully validatign the block. This transaction doesn't have any inputs. And obviously 
+there's no transaction fee. If the miner happens to leave space for a transaction fee, then 
+those coins are lost forever. So the number of bitcoin in circulation increases with each 
+new block mined. Now these coinbase coins aren't considered "mature" until 100 confirmations 
+later. So 100 new blocks need to be added on top of this block in order for the block miner 
+to be able to claim ownership of those coins from the coinbase transaction. This is because 
+the block could end up being extinct. And so we don't want the user using these coins until 
+we know for sure that the coins are theirs. If the block ends up becoming extinct because 
+another chain beat it out, then the coinbase coins are considered invalid, and instead go to 
+the miner of the block on the larger chain. But Ethereum doesn't do this. They use some 
+thign called uncle blocks. Different coins have different strategies.
+
+
+UTXO 
+This stands for unspent transaction outputs. Basically, when your wallet shows you how much 
+money you have, it's showing you UTXOs that you have the keys for to use as inputs - the 
+bitcoins that you can spend. Because technically, you never actually have any coins in an
+account, you just have the keys that have the permission to spend particiar bitcoins, 
+because those keys are able to successfully run the scripts included in the outputs of 
+the source transactions. A UTXO can be spent only once, and is always spent completely – if 
+you want to spend less Bitcoin than the UTXO is for, just create additional transaction 
+outputs that “return” some BTC back to you (in other words, create new UTXOs that you 
+control, for the amount that you want to receive as “change”).
+
+
+
+BITCOIN 
+The history of the transactions is the currency. The currency is the ledger. The are no 
+actual coins. It's all just a public list of who paid who how much. And just by 
+looking at that, you can tell who owns how much "money".
+
+
+
+BITCOIN WALLET 
+This is just some software that keeps track of all the addresses that belong to you. It generates the 
+addresses. It could sum up all of the coins that you have the power to claim, etc. And it can 
+allow you to generate an address for users to send coins to. There are deterministic wallets and 
+Hierarchical deterministic wallets, as explained in other sections in this doc.
+
+
+BLOCKCHAIN
+It's functionally a linked list. Each block has a pointer to the previous block, (each 
+block includes the hash of the previous block in the header). Each block will also 
+contain all the transactions it mined, and the the PoW (proof of work).  These 
+block chains are pretty interesting concepts. I really haven't fulled grasped why it 
+should be so remarkable yet to be honest, but the whole concept of applying crypto-
+hashing in this particular system is quite remarkable.
+
+
+BLOCKCHAIN & PROOF OF WORK
+So one thing that we have to understand is that you can't submit requests as completed 
+transactions to the mempool, you can only submit payments as transactions. Because you 
+have to be able to validate that you have the right to coins that you're sending. So 
+you can't just fake a transaction that someone else has paid you some bitcoins because 
+that user has to sign the transaction (prove their ownership). Also, you can't copy 
+and paste a previous transaction to you again and again, because the signature will be 
+different for each transaction because each transaction has a unique ID which is included 
+in the data to be hashed, so the signature is different for each transaction. 
+
+To get the proof of work for a block of transactions, computers must guess random numbers 
+which, when hashed agaisnt the data of the transactions in their proposed block, hash to a 
+value that begins with a particular number of zeroes. Could be 30 or 60 or whatever, 
+depending on how quickly we want to process these blocks. Blocks include the hash of the 
+previous block in their header, and this information is included as part of the data 
+comprising the block when it's hashed against possible nonces (number only used once). So 
+the blocks all link to the block prior. So swapping the order of blocks would change the 
+prevHash value in the header and thus make the proof of work for the block invalid. So 
+the blockchain would be invalid. Similarly, if you try to alter a block in any way, even 
+by just one character, the proof of work would again be invalid and thus the blockchain 
+would be invalide because the blocks no longer link to each other through their hashes. 
+
+It's called proof of work, because having the number that hashes a block to have the zeroes 
+in front proves that you actually did the work to check a ton of different numbers.
+
+So if you need a hash that starts with 30 zeros, that means there's a (2^226)/(2^256) 
+chance that any given attempt will be valid. So the expected number of attempts you're 
+going to have to make before you find a nonce that fits is (2^256)/(2^226) = roughly
+1 billion. If it were 60 zeros, then you'd have to try 1,000,000,000,000,000,000 times 
+on average before you found a successful nonce. The number of zeros needed changes as 
+the number of miners changes. The goal is for new blocks to be mined every 10 minutes. 
+For Ethereum, the average block time is 15 seconds, for XRP 2.5 seconds, for LTC 2.5 
+minutes, etc. The reward for mining a block to the block chain started out as 50 bitcoin,
+but it decreases geometrically over time. Currenlty it's 6.25 bitcoin per new block. So 
+that means about 37.5 bitcoin are added to the supply every hour. Given math, this means 
+the the total number of bitcoin will converge to 21,000,000 coins. But miners will still 
+be able to make money off of transaction fees.
+
+Each block is limited to about 2,400 transactions. So you have to pay a fee in bitcoin for 
+a miner to be willing to add your transaction to the next block. For context, that means 
+around 14,000 transactions are processed per hour on Bitcoin. Visa, processes around 1,700 
+transactions per second. And are capable of processing 24,000 transactions per second. So 
+bitcoin is slow as fuck. The current average transaction fee on bitcoin is around $1.84, 
+but it got as high as $70 in April of this year.
+
+Just like a transaction is only considered valid when it has the sender's signature, a 
+block is only considered valid when it has the proof of work.
+
+
+MEMPOOL 
+A mempool (memory and pool) is a cryptocurrency node’s mechanism for storing 
+information on unconfirmed transactions. It acts as a sort of waiting room for 
+transactions that have not yet been included in a block. 
+
+When a transaction is broadcast, it is sent from a node to its peers, who will then pass 
+it on to their peers. This continues until the transaction has been widely propagated, 
+ready for miners to add it to a block. Nodes will run a series of checks to ensure that the 
+transaction is valid – i.e., verifying that signatures are correct, outputs do not exceed 
+inputs, and funds have not already been spent. If it fails to satisfy these conditions, it 
+is rejected.
+
+We often speak of the mempool, but it should be noted that there is no universal pool shared 
+by all nodes. Each one is configured differently and receives transactions at different times. 
+Lower-end devices with limited resources may only dedicate small amounts of memory to logging 
+transactions, whereas higher-end ones might devote considerably more. As miners are motivated 
+chiefly by profits, transactions with higher fees attached are those most likely to be discarded 
+from the mempool first as they’re confirmed. 
+
+
+BLOCK PROPOGATION 
+There's a lot that could be discussed her about how exactly blocks and transactions are propogated 
+to the rest of the nodes. But at a high level, nodes just tell each other, and those nodes tell 
+others etc. So it's exponential. In 12 to 15 "hops" every node should be informed. Can read more about 
+it here: https://medium.com/coinmonks/block-propagation-scaling-and-adoption-maturing-blockchains-99218260b7b8
+
+
+ORPHAN BLOCKS
+This term meant something specific until 2015, when the protocol changed and these blocks 
+no longer occurred. But we still call a different phenonmenon orphan blocks so it's a bit 
+confusing. I've labeled the other phenonmenon "extinct blocks" below. But before 2015, 
+orphan blocks were basically blocks that were received by a node before its parent block.
+So it couldn't be linked up to the chain properly. So the node had to wait for the parent 
+to be received before linking everything up. This would be caused by the parent block not 
+being sent to the node fast enough. So there's no where for the child node to be placed. 
+But now, nodes check the header of the block to make sure it lines up before downloading it.
+So since 2015 there haven't been any more orphan blocks to deal with. 
+
+
+EXTINCT BLOCKS 
+These are blocks which were mined corectly and added to the chain, but eventually got 
+beaten out by a more dominant chain. Some nodes may have considered it to be the best 
+block at some point, but they switched to another chain which does not contain the 
+relevant block anymore. Now typically, if two blocks are mined at roughly the same time, 
+95% of the transactions in the blocks are the same transactions. So Bitcoin just disregards 
+these transactions in the extinct block. But for the 5% of transactions in the extinct block
+which didn't get included in the new block, they get added back to the mempool to be added 
+to a future block. This is one reason why lower transaction fees can lead to longer wait 
+times for transactions to be added to the chain. 
+
+Now one complication is the coin base transaction for the extinct block. Coinbase transactions
+aren't considered "mature" until 100 new confirmations have been added to the chain. So 100 
+new blocks need to be added on top of this block in order for the block miner to be able to 
+claim ownership of those coins from the coinbase transaction. This is because the block 
+could end up becoming extinct. And so we don't want the user using these coins until we 
+know for sure that the coins are theirs. If the block ends up becoming extinct because 
+another chain beat it out, then the coinbase coins are considered invalid, and instead go to 
+the miner of the block on the larger chain. So the number of new bitcoins added to the system
+stays constant, and won't be double spent because  But Ethereum doesn't do this. They use some 
+thing called uncle blocks. Different coins have different strategies.
+
+From the perspective of nodes following the longest chain, transactions in an extinct block
+is equivalent to not being included in any block at all. Thus, an extinct block including a 
+transaction has no impact on any nodes that recognize the block as invalid–they still 
+consider the transactions unconfirmed and they will continue to consider them for inclusion 
+in a future block.
+
+
+
+
+51% ATTACK 
+Say you possessed 51% of all of the hashing power available to mine bitcoin. Say you 
+hash a private chain on the side using all the public transactions, i.e. you grab 
+transactions from the mempool like normal and hash them into a block, but you don't 
+broadcast the block outwards to the other nodes. Meanwhile you spend bitcoin on the 
+public chain. You buy a car, a house, or even exchange your coins for cash, etc. 
+However these transactions are not included on your private chain that you're building 
+on the side. 
+
+Now since you control the majority of the power, eventually your private chain will build 
+up faster than the public chain. And say eventually you broadcast out your private chain 
+to the other nodes. Now your private chain becomes the accepted public block chain 
+because it's the longest. However, this new chain does not include your transactions 
+which paid for the boat, car, house, cash, etc. So those who gave you the house, car, 
+etc. will no longer be able to claim ownership of the coins you sent them because those 
+blocks are now extinct. All the other transactions from the honest chain may or may not 
+be extinct, depending on whether you picked them up in your private chain. Now presumably 
+you'd need to make sure that your private chain also doesn't include the downstream 
+transactions which originated with your fake payments. Because once you merge your private 
+chain, those initial transactions won't exist anymore, so the downstream transactions wont 
+be possible. This shouldn't be a huge issue though given you'd probably want to implement 
+your attack within 16 hours (before 100 confirmations), and I expect people aren't spending 
+bitcoins with that much frequency? You might actually want to do it after you have just a 
+two or three block lead, idk, don't know the optimal strategies here. My rationale with the 
+before 100 confirmations thing is that you'd want to be able to claim all the coinbase 
+transaction rewards for your new blocks.
+
+Functionally, if the person you bought a boat from ended up buying a car using those coins, then 
+the person who sold the car would be the one who would end up getting screwed. Because they 
+parted with real goods in exchange for the ability to claim ownership of some bitcoins, but 
+they no longer can claim that ownership.
+
+Now in these attacks, you'd be able to trace back the double spent transactions just by comparing
+the malicious chain with the now extinct chain. So you'd need some anaonymity? Also the value of 
+the currency would completely tank after you did this because everyone would lose faith in the 
+currency.
+
+A 51% attack, however, is theoretically limited in the amount of disruption it can cause. 
+While the attacker could trigger the double-spending problem from above, they cannot reverse 
+others’ transactions on the network or prevent users from broadcasting their transactions to 
+the network. Though they can refuse to accept transactions from particular address/to 
+particular addresses in the blocks that they mine. Additionally, a 51% attack is incapable 
+of creating new assets, stealing assets from unrelated parties or altering the functionality 
+of block rewards.
+
+The larger a blockchain grows, the more difficult it becomes for a rogue miners to carry out an 
+attack on it. Smaller networks, on the other hand, may be more vulnerable to a block attack.
+
+Also Bitcoin is hardcoded at particular checpoints. So even in the case of a 51% attack, 
+it'd be impossible to alter transactions before that point. It'd also be pretty difficult
+to alter any previous blocks, even if they haven't been checkpointed and hardcoded in.
+
+
+DOUBLE SPENDING 
+This is explained above. Basically where a user is able to spend coins, but then erases 
+those transactions by causing those blocks to become extinct through a 51% attack. So now 
+they regain control of those coins. There have been 51% attacks in the past. There were 
+multiple such attacks on ETC this past year I think. The value didn't go down though, 
+because people were so desperate to get in. This is despite those attackers getting 
+away with whatever it was they stole during the double spending hack. But logically 
+these types of attacks would tank the price of the coin because people would lose trust.
+
+
+SECURITY OF BITCOIN 
+So basically, you can't just claim someone else paid you in a transaction and send it out 
+to the mempool. Because you have to be able to sign the transaction with proof that you 
+can claim those coins. And you can't do that unless you actually know the private key, 
+in which case you do own the coins. 
+
+What about trying to trick someone that you paid them money without broadcasting that 
+block to other nodes? Well that'd be impossible unless you had 51% of the hash rate. 
+
+What about changing the previous blocks? Well to do that you'd have to be able to re-hash
+the block and each block after it in order to maintain the bitcoin protocol. 
+
+Bitcoin is safe because you have to have the private key in order to sign transactions. 
+Additionally, the work to add blocks is distributed, so no one person can manipulate 
+things unless they control 51% of the hash power. And can't just make up transactions 
+and submit them because the mining nodes will check their validity.
+
+Bitcoins don't actually exist. None of it actually exists. It's just software. Decentralized 
+software. The "coins" are just numbers that are kept track of on a public ledger. 
+
+Wow holy shit okay that took nearly 3 full days to get through. But now I have a good sense of 
+what's going on. So now we can move onwards. So let's begin the actual course now.
+
+.
+.
+.
+.
+.
+.
+
+$15 gallon
+5 bottles per gallon
+$3 per unbottled bottle of wine 
+33% markup for bottling
+Then 4*1.5 = $10 after customs 
+Logistics and distribution are some number per bottle
+Now sell for $20 = 1,500 rupees
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ethereum has smart contracts, which Bitcoin doesn't. Well Bitcoin's smart contracts
+aren't Turing complete. Bitcoin developers view Bitcoin as an asset, whereas Ethereum developers
+view Ethereum as an asset but also a utility. 
+
+
+Really need to understand this hashing, public/privte key, encryption, TLS, stuff. And 
+then just how Bitcoin works etc.
+
+
+
+
+
+
+
+
+I mean if we go back to first principles, like what's even the value add of Botcoin? It 
+just allows finance to be decentralized. Why is that good? Because there's so central bank?
+Idk, is that good? I feel like good monetary policy can help economies.
+
+What are the other value adds of bitcoin?
+It's public? 
+
+What about Ethereum?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Notes:
+Hexidecimal digits can be represented in bits (binary), using four digits.

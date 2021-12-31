@@ -1,0 +1,23 @@
+These are topics that might be iteresting to do a deeper dive into in the future if 
+there's more time.
+
+
+
+
+
+
+Lesson 0
+- MERKLE TREES 
+- PROOF OF STAKE 
+- Lightning Network
+- Sections 8-12 of the Bitcoin whitepaper
+
+
+
+
+
+General:
+1. Buy some land in the metaverse
+    - https://www.businessinsider.com/metaverse-crypto-land-surging-investor-explains-how-to-pick-property-2021-12?fbclid=IwAR1IVXkeh9wzLozcoFO2VKqMF6g-QqrMydIF8xWL3QHEir4bWmcc-_hWmts
+2. Use the Brave browser?
+3. Distributed File Storage?
