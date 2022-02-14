@@ -3,13 +3,38 @@ Blockchain & Solidity Full Course (Python based)
 
 Master GitHub Table of Contents: https://github.com/smartcontractkit/full-blockchain-solidity-course-py#non-technical-explainer
 
+[YouTube Video](https://www.youtube.com/watch?v=M576WGiDBdQ)
+
+File Structure:
+
+- Resources is a file with a bunch of cheatsheets and vizualizations that can be helpful/
+- "Dev" is the primary folder
+- Within Notes, we see a text file for each section of the course.
+- We have 32 practice contracts.
+    Contracts 0-3 are vanilla HTML, CSS, JS.
+    Contracts 4-7 are Node sites
+    Sites 8-20 are server based Node sites
+    Sites 21-32 are React sites
+
+Sites 0-3 are self-explanatory in terms of starting. Just click on the html file. For 4-32 you'll have to go through the notes to the specific sites if you need a refresher on how to spin one up. It ranges from doing node server_name for server based Node apps to spinning up a React site via npm start. The deets are all in the Notes. Also note that there is no back-end functionality in any of our React apps. It's the same concept as all the earlier server based Node apps if you want to add it in though.
+
+Below links the Practice Sites with where you can find the sites' creation process in the notes directory.
+
+
+Mapping
+- Contract 1.0 (Simple Storage) - Lesson 1. This is just a basic framework for a contract.
+- Contract 1.1 (Storage Factory) - Lesson 2. This is a framework for contract inheritance and how to interact with variables and attributes of already deployed contracts.
+- Contract 1.2 (Fund Me) - Lesson 3. This shows us how we can create a smart contract that can accept payment from others and deposit those payments into the contract creator's address and only that address.
+- Contract 1.3 (Python Simple Storage) - This is a contract that deploys to a local Ganache Instance,checks the value of a variable, updates that value through another transaction, and then checks again
+
+
+
+
 
 
 
 *Big Update*: [New Rinkeby Faucet Located Here](https://faucets.chain.link/rinkeby).
 You can find [Backup Faucets here](https://docs.chain.link/docs/link-token-contracts/#rinkeby).
-
-[YouTube Video](https://www.youtube.com/watch?v=M576WGiDBdQ)
 
 <br/>
 <p align="center">

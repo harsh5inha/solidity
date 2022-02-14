@@ -238,7 +238,7 @@ Thus, the final transaction will include:
 2. The scriptSig for user B's source transaction (which includes user A's public key and 
     user A's digital signature on user B's source transaction)
 3. The transaction ID of user C's source transaction (as an input)
-4. The scriptSig for user C's source transaction (which includea user A's public key and 
+4. The scriptSig for user C's source transaction (which includes user A's public key and 
     user A's digital signature on user C's source transaction)
 5. The number of coins being sent to user D and the script that'd need to be run in the 
     future in order for user D to verify they owned the coins (as an output)
@@ -532,11 +532,14 @@ you'd need to make sure that your private chain also doesn't include the downstr
 transactions which originated with your fake payments. Because once you merge your private 
 chain, those initial transactions won't exist anymore, so the downstream transactions wont 
 be possible. This shouldn't be a huge issue though given you'd probably want to implement 
-your attack within 16 hours (before 100 confirmations), and I expect people aren't spending 
+your attack before 100 confirmations (16 hours-ish), and I expect people aren't spending 
 bitcoins with that much frequency? You might actually want to do it after you have just a 
 two or three block lead, idk, don't know the optimal strategies here. My rationale with the 
 before 100 confirmations thing is that you'd want to be able to claim all the coinbase 
-transaction rewards for your new blocks.
+transaction rewards for your new blocks. Because otherwise, other people would have been 
+able to claim those coins and spend them, which could complicate things. So you could either 
+do it before 100 blocks or just make a note to also exclude any transactions which claimed 
+those coinbase coins. Make sense?
 
 Functionally, if the person you bought a boat from ended up buying a car using those coins, then 
 the person who sold the car would be the one who would end up getting screwed. Because they 
@@ -544,7 +547,7 @@ parted with real goods in exchange for the ability to claim ownership of some bi
 they no longer can claim that ownership.
 
 Now in these attacks, you'd be able to trace back the double spent transactions just by comparing
-the malicious chain with the now extinct chain. So you'd need some anaonymity? Also the value of 
+the malicious chain with the now extinct chain. So you'd need some anonymity? Also the value of 
 the currency would completely tank after you did this because everyone would lose faith in the 
 currency.
 
@@ -594,8 +597,16 @@ and submit them because the mining nodes will check their validity.
 Bitcoins don't actually exist. None of it actually exists. It's just software. Decentralized 
 software. The "coins" are just numbers that are kept track of on a public ledger. 
 
+
+.
+.
+.
+.
+.
+.
+
 Wow holy shit okay that took nearly 3 full days to get through. But now I have a good sense of 
-what's going on. So now we can move onwards. So let's begin the actual course now.
+what's going on. So now we can move onwards. So let's begin the actual course now starting over. 
 
 .
 .
@@ -604,37 +615,218 @@ what's going on. So now we can move onwards. So let's begin the actual course no
 .
 .
 
-$15 gallon
-5 bottles per gallon
-$3 per unbottled bottle of wine 
-33% markup for bottling
-Then 4*1.5 = $10 after customs 
-Logistics and distribution are some number per bottle
-Now sell for $20 = 1,500 rupees
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+LESSON 0
 
 Ethereum has smart contracts, which Bitcoin doesn't. Well Bitcoin's smart contracts
 aren't Turing complete. Bitcoin developers view Bitcoin as an asset, whereas Ethereum developers
 view Ethereum as an asset but also a utility. 
 
+HOW SMART CONTRACTS WORK
+Smart contracts have their own "balances" and addresses, etc. To deploy a smart contract on Ethereum, 
+you send a transaction to address 0 that contains EVM bytecode in its data field. This code, when 
+executed, should return the contract’s code (so, there’s a level of indirection, you don’t directly 
+attach the contract code itself, you attach code that will return the contract code).
 
-Really need to understand this hashing, public/privte key, encryption, TLS, stuff. And 
-then just how Bitcoin works etc.
+The contract will be accessible under an address that is derived from the deploy transaction sender’s 
+address and their nonce (the count of how many transactions they have sent). But the contract itself 
+has neither a private key nor a public key, it only has an address. Money sent to a smart contract 
+cannot be accessed unless you have a withdraw method or something, nobody has a private key that could 
+create a valid signature in its name.
+
+About where it’s stored, it’s in state storage - something like a “cache” that nodes keep, the stuff 
+that results after you execute every transaction that has ever been sent to Ethereum. Technically you 
+don’t need to store this on disk, you could just play back all transactions when you boot up the node, 
+but practically it’s more efficient to store it, since this way nodes boot faster.
+
+So I think how it works is that when we create a smart contract, the contract gets stored at an address,
+which becomes part of the chain. But the contract itself doesn't have a public/private key. When we 
+want to interact with the contract and make a state change, we do so. When we make the state change, 
+under the hood what's happening is the "from" address is the address of our personal account, the "to" 
+address is the address of the contract, but the transaction hash etc. are all different because this is 
+a separate transaction from the initial one which created the contract to begin with. 
+
+So the original smart contract is stored at the same address as when we started. But when we decide to make 
+a call request to look at the state of one of the variables or functions of the contract, it will return the 
+most updated state. And it knows how to do this, because all of the transactions to the contract arrived at 
+the same address, the smart contract address. 
+
+
+HOW TO CHECK IF AN ETHEREUM ADDRESS IS VALID?
+A valid Ethereum address has the following properties:
+- It must have 42 characters including the initial “0x”.
+- It must only contain the following letters: a, b, c, d, e and f. Which means that an Ethereum address with an 
+    “h” letter is invalid.
+- It can have any number from 0 to 9.
+- If it has all those properties and it’s all small caps or all all caps, then it’s a valid address.
+- Otherwise, if the address has a combination of capital letters and lowercase letters, you have to check the 
+    checksum of that address. You can do that with web3.js 1.0. Simply execute web3.utils.isAddress("Your-address-here") 
+    and it will return true or false if it’s invalid.
+
+Now if you only want to check if an address is valid without caring about how it works, you can do so here: 
+https://tokenmarket.net/ethereum-address-validator
+
+
+TRANSACTION VS CALL
+A call is just reading information from the blockchain. For instance, when you connect to an ethereum node 
+with metamask and you make a call, what you’re actually doing is just searching in the data stored on the 
+blockchain connected to metamask to find the information that you want to get from that call.
+
+For that reason, it doesn’t cost any gas / ether because you’re not sending information to anybody. You’re not 
+adding information to the blockchain and nobody will mine the call. So miners don’t get paid since they don’t
+ participate in the call execution.
+
+You can only call function that are specified as constant or public variables, since they create constant functions 
+to get the values from the Smart Contract.
+
+A transaction is a way to update the blockchain with new information. When you generate a transaction you’re sending 
+information to all the ethereum nodes so that they update the blockchain. Miners get that information and they 
+update their own blockchain. It’s a write operation.
+
+For instance, if you send ether to another user, you are actually generating a transaction that says Increase 
+the balance of user B and reduce the balance of user A. That information is written on the blockchain and you 
+have to pay gas for the mining.
+
+
+WHAT HAPPENS IF YOU SEND ETH TO AN ETC ADDRESS
+If you sent ether to an ethereum classic address, you may be able to recover your ether depending on if you’re 
+using a Smart Contract or not in the process.
+
+Private keys are equally valid on both chains. This means that if you send 10 ETH to an ETC address, the equivalent 
+ETH address will receive those 10 ETH since the same account exists in both chains. So if you send ETH to an ETC
+ account directly, you’re not losing the ether if the receiving address is the same on both chains.
+
+Now Smart Contracts are unique to each chain since they are not generated from private keys. So if you send 10 
+ETH to an ETC Smart Contract address, you’ll lose your ether unless someone has created a Smart Contract with 
+the exact ame address on the ethereum classic blockchain. Which is almost impossible because of the huge amount 
+of possible addresses.
+
+
+
+ORACLES 
+So blockchains are closed systems, just by nature of how the math links everything together. But we'll 
+need the chains to interact with data outside of the chain, like pulling thr price of ethereum for our 
+smart contracts or maybe a weather API or who knows what. But these data systems are centralized right, 
+so that defeats the purpose of the whole decentralization thing. Oracles are systems that bring external 
+data into a blockchain or do some sort of external computation for the blockchain.
+
+
+THE ORACLE PROBLEM
+1. Blockchains alone can’t access outside data.
+2. Using centralized oracles nullifies the advantage of smart contracts — and are major security risks.
+
+
+DECENTRALIZED ORACLE
+A decentralized oracle or decentralized oracle network is a group of independent blockchain oracles 
+that provide data to a blockchain. Every independent node or oracle in the decentralized oracle network 
+independently retrieves data from an off-chain source and brings it on-chain. The data is then aggregated 
+so the system can come to a deterministic value of truth for that data point. Decentralized oracles solve 
+the oracle problem.
+
+So basically these oracle nodes function together as their own version of decentralized consensus. 
+
+
+HYBRID SMART CONTRACTS
+Hybrid smart contracts combine code running on the blockchain (on-chain) with data and computation from 
+outside the blockchain (off-chain) provided by Decentralized Oracle Networks. Hybrid smart contracts enable 
+advanced forms of economic and social coordination that have the tamper-proof and immutable properties of 
+blockchains yet leverage secure off-chain oracle services to attain new capabilities, such as scalability, 
+confidentiality, order fairness, and connectivity to any real-world data source or system.
+
+
+CHAINLINK 
+Chainlink is a decentralized blockchain oracle network built on Ethereum.[3][4] The network is intended to 
+be used to facilitate the transfer of tamper-proof data from off-chain sources to on-chain smart contracts. 
+Its creators claim it can be used to verify whether the parameters of a smart contract are met in a manner 
+independent from any of the contract's stakeholders by "connecting the contract directly to real-world data, 
+events, payments, and other inputs". It'd appear that the course instructor actually works for chainlink.
+It is the most popular oracle network.
+
+dAPP 
+More or less interchangeable term for smart-contract or decentralized application. 
+Also smart contract protocol, smart contract platform, blockchain, are all interchangeable. 
+ 
+
+ DAO 
+ Decentralized Autonomous Organization
+
+
+ METAMASK 
+ One of the most popular wallets for Ethereum. Browser extension or Mobile app. MetaMask allows 
+ users to store and manage account keys, broadcast transactions, send and receive Ethereum-based 
+ cryptocurrencies and tokens, and securely connect to decentralized applications through a 
+ compatible web browser or the mobile app's built-in browser. The application includes an 
+ integrated service for exchanging Ethereum tokens by aggregating several decentralized 
+ exchanges (DEXs) to find the best exchange rate. This feature, branded as MetaMask Swaps, 
+ charges a service fee of 0.875% of the transaction amount.
+
+Initially the first wallet was called bitcoin Qt, which Nakamoto also released along with the 
+currency. Here's a good summary of the history of BitCoin wallets: https://academy.moralis.io/blog/everything-you-need-to-know-about-the-history-of-bitcoin-wallets
+
+A private key is associated with one account (unit). Your recovery phrase is associated with 
+your entire wallet.
+
+I Created a metamask wallet and got my recovery phrase. 
+
+There is the Ethereum MainNet, which is based on actual money. But then there are also a bunch of test nets 
+that we can use just to test applications etc. eithout real money. 
+
+We're going to be working with the Rinkeby test net and the Kovan test net.
+
+
+FAUCET
+A test application that gives us free test tokens, like the free test Rinkeby Ethereum. The 
+Rinkeby faucet wasn't working for some reason so we just used the Chainlink faucet to get 
+some test coins.
+
+
+BLOCK EXPLORER
+Anything that allows us to view blockchains in a more GUI friendly way. Etherscan is one 
+such example.
+
+
+GAS 
+The more computation a transaction uses, the more "gas" you have to pay for it. Every transaction 
+that happens on-chain pays a "gas fee" to node operators. So sending 1 ETH to one address would be 
+cheaper than sending 1 ETH to 20 addresses. You can set a "Gas limit" on your transactions such that
+the transaction won't be executed if the required gas fee is greater than the limit. The Gas price 
+of Ethereum fluctuates with demand. You can check http://ethgasstation.info/ to see what the current 
+prices are. 
+
+ 
+GWEI 
+1 Ether is 1 billion Gwei. And 1 Gwei is 1 billion Wei. 
+
+
+TRANSACTION FEE 
+So this is Gas Used X Gas Price 
+
+
+
+PROOF OF STAKE 
+This is an algorithm in which nodes will put up some collatoral in order for the privilidge to validate 
+transactions into a block. If they lie, then the other validators can call them out and they'll lose the 
+collatoral they put up. Ethereum will switch to PoS in ETH 2.0. How to choose which nodes get to be 
+validators? Well the current plan for ETH 2.0 is to use RanDAO, a DAO that runs a blockchain random 
+number generator. Using PoS will reduce the power consumption of the BTC network by 99%. 
+
+In a proof of work network they're called miners but in a proof of stake network they're called 
+validators. 
+
+
+SHARDING 
+In addition to switchin gto Proof of STake, ETH 2.0 will also make use of sharding. So there will 
+be way more chains available that all roll up into the main Ethereum network. This increases the 
+total number of transcations that can be processed by a chain. Because currently there is only so 
+many transactions that can fit on to a block, so the gas fees can shoot up if there's a lot of demand.
+
+
+LAYER 1
+Any base layer blockchain implementation. BTC, ETH, Avalanche etc. are all layer ones.  
+
+
+LAYER 2
+Any application built on top of a layer 1. So these would be Chainlink, Arbitron, 
+optimism, etc.
 
 
 
@@ -643,6 +835,14 @@ then just how Bitcoin works etc.
 
 
 
+
+
+
+
+
+
+
+PHIOSOPHY
 I mean if we go back to first principles, like what's even the value add of Botcoin? It 
 just allows finance to be decentralized. Why is that good? Because there's so central bank?
 Idk, is that good? I feel like good monetary policy can help economies.
@@ -655,8 +855,21 @@ What about Ethereum?
 
 
 
+So like Robinhood doesn't actually have a wallet so you don't actually own the coins. So you 
+could make fun of people for that, but also like there are tons of Gold ETFs where you don't actually own 
+the gold and it's not clear why anyone values gold. So maybe don't make fun of them? 
+And also you don't need to understand how the fed works to have a bank account. But that said you 
+probably do need to understand how it works to be really good at the financial markets. But do you to be good at 
+business? Maybe at enough scale sure. So what's the parralell here. Do you need to learn all this shit actually?
+Well I'm doing this based off my curiosity heuristic so whatever. 
 
 
+
+SIMPLE EXPLANATION
+Ultimately accounts function as units of three numbers, which are mathematically linked: private key, public key, address.
+If there's something you are forgetting or don't understand, don't worry, you can figure it out just by reading this doc. 
+If there's some minutia which you don't understand, then the simplset explanaition is probably pretty close to the truth. 
+You've already learned all this stuff, there is no magic. These are machines doing basic math.
 
 
 

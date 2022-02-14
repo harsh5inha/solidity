@@ -1,0 +1,20 @@
+
+IMPORTING CONTRACTS
+So we an import contracts into larger contracts. So contracts within contracts. Just like importing 
+a module etc. Example in contract 1.1.
+
+INHERITANCE
+We can also inherit contracts, so that's when we create a contract that inherits all of the functions,
+arrays, variables, etc. of a different contract. You basically initialize your contract as a type of a 
+different contract. We do this by specifying:
+`contract X is Y`
+Example in contract 1.1.
+
+
+To interact with a contract, you need the address, and you need the ABI.
+
+ABI 
+Application Binary Interface
+
+When we actually initialize a new contract and store it in an array, the object that is actually stored 
+is the address of the contract.

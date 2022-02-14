@@ -1,0 +1,27 @@
+dependencies:
+  # - <organization/repo>@<version>
+  - smartcontractkit/chainlink-brownie-contracts@1.1.1
+compiler:
+  solc:
+    version: 0.6.6
+    remappings:
+    # below we're telling brownie, whenever you see the word "chainlink" in our FundMe.sol file, sub in the github repo to the right
+    # We have to do this because otherwise in FundMe.sol, brownie won't know how to pull from npm
+      - '@chainlink=smartcontractkit/chainlink-brownie-contracts@1.1.1'
+dotenv: .env
+# Below we're specifying which address to use as the oracle smart contract to get the ETH/USD conversion for various chains
+# We also specify whether to verify our source code or not depending on the chain we're deploying to
+networks:
+  default: development
+  rinkeby:
+    eth_usd_price_feed: '0x8A753747A1Fa494EC906cE90E9f37563A8AF630e'
+    verify: True
+  mainnet-fork-dev:
+    eth_usd_price_feed: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419'
+    verify: False
+  development:
+    verify: False
+  ganache-local:
+    verify: False
+wallets:
+  from_key: ${PRIVATE_KEY}

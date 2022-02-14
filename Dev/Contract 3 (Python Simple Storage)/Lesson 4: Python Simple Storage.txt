@@ -1,0 +1,44 @@
+In contract 1.3 we're making a contract that 
+1. deploys to a local Ganache Instance
+2. checks the value of a variable
+3. updates that value through another transaction
+4. and then checks again
+
+Actually we did the above but then updated it such that we're deploying and interacting with the live Rinkeby Test net and our Rinkeby address, not just a local chain.
+
+
+WEB3.PY 
+Web3.py is a Python package that we can use to make our contracts more versatile via 
+interacting with Python and being in our own IDE and not the remix IDE. 
+
+
+BROWNIE 
+This is a framework we can use to interact on top of web3.py
+
+3:53
+GANACHE 
+A simulated or fake blockchain. Allows us to spin up our own local blockchain for testing etc.
+It's only one node. We are the only node.
+
+4:12
+CALL VS TRANSACT 
+There are two ways we can call functions on contracts, either with .call() or with .transact(). 
+If we do .transact() then we are actually making a state change to the chain, which will require gas. 
+If we just do .call() then we're just calling something and don't actually make any change to the chain.
+
+
+GANACHE CLI
+We downloaded the Ganache CLI, so we can interact via the terminal instead of the UI. The CLI I think is what Brownie uses on the back end. So we've 
+got yarn version 1.22.17, node version 16.14.0 and npm version 8.3.1.
+
+So to run a local block chain from our computer all we have to do is run `ganache-cli`. 
+
+
+infura.io 
+This company will give us a blockchain URL to interact with to run whatever you want to run. So 
+we can interact with the Rinkeby chain using a URL that they provide us etc. Alchemy also does the same thing
+The latter part of this lesson walks through how to deploy to a real testnet, like Rinkeby. Not just a local 
+Ganache chain, which we did. 
+
+We could alternatively just deploy to the blockchains using our own machines, but it's much simpler to use the infura service or equivalent.
+

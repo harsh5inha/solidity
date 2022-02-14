@@ -1,0 +1,181 @@
+In this contract, we recreate contract 2 (FundMe). So basically a contract to which anyone can deposit ETH, but only the 
+owner can withdraw the ETH. However this time it is way more scalable, and can be deployed to live test chains, to local 
+forks of mainnets, to local chains, and even to live chains if we want.
+
+FILE STRUCTURE 
+
+1. CONTRACTS
+        A. FundMe.sol:  This is our primary contract. There are two main differences between this 
+                        contract and the contract from contract 2. First, we added the getEntranceFee() 
+                        function, and we removed the hardcoded AggregatorV3Interface addresses. Those 
+                        addresses were the locations on the Rinkeby test net of smart contracts that 
+                        pulled the ETH/USD conversion from the Chainlink Oracle. And so for every 
+                        transaction that our smart contract received to add funds, we would call for 
+                        the conversion from those contract addresses. However now, we want this contract 
+                        to work on local networks as well as live mainnets and live test nets etc. And 
+                        so we functionalized it a bit by setting the oracle address in the constructor 
+                        function of the contract. Which in turns gets its data from the deploy.py file 
+                        which in turn gets its data from either the config file or pull the address of 
+                        the most recent MockV3Aggregator contract (these are the cases when we are using 
+                        a mock contract).
+
+        B. test/MockV3Aggregator.sol:   This contract is a mock smart contract to get the ETH/USD conversion rate 
+                                        from an oracle. We create it in case we want to test our FundMe 
+                                        contract in a local chain (but not a local fork of a mainnet). Without it, 
+                                        we wouldn't be able to pull the ETH/USD conversion because local chains won't 
+                                        have those smart contracts stored on chain. Unless we fork a mainnet or 
+                                        something, in which case we wouldn't need to use this mock contract.
+2. SCRIPTS 
+        A. helpful_scripts.py:  This file lists out a few functions that are used elsewhere in the app including 
+                                get_account() and deploy_mocks(). 
+                                
+                                get_account() returns the account key of a test account from the accounts package 
+                                if we're testing on a local chain (either a local mainnet fork or just a local 
+                                Ganache chain) and it returns the account address of whatever we store as our 
+                                personal private key in our environment variables if we're not deploying to a 
+                                local chain. We define exactly what counts as a local chain at the top of the file. 
+
+                                deploy_mocks() checks to see if a MockV3Aggregator contract has been deployed in 
+                                this project yet, and if not, it deploys one from the address defined in the function 
+                                above. If a MockV3Aggregator contract has already been deployed, then nothing happens
+                                on function call.
+
+        B. fund_and_withdraw.py:        This file lists out two functions, fund() and withdraw(). 
+                                        
+                                        fund() gets the "Entrance fee" of the latest FundMe smart contract you deployed 
+                                        and then it sends the entrance fee to the contract from your address.
+
+                                        withdraw() withdraws all the funds in the account to your address. Or whatever 
+                                        address is specified in get_address() in helpful_scripts from above.
+
+        C. deploy.py:   This file checks if you're deploying to a local ganache chain, and if so it pulls the contract 
+                        address of the mock AggregatorV3Interface smart contract we defined to use as the oracle to get the ETH/USD 
+                        conversion. If you're not deploying to a local Ganache chain then it pulls the address 
+                        from your config file. In the config file we've specifed two addresses, one if we're using a 
+                        local fork of the ethereeum mainnet and one if we're using the rinkeby live test net. The 
+                        deploy.py file knows where to look. Again, these addresses are the addresses of smart contracts 
+                        on the ethereum chain and rinkeby chain respectively that will pull the ETH/USD conversion for 
+                        us from the chainlink oracle. 
+
+                        After it grabs the right address for the oracle it deploys our FundMe contract to the blockchain
+                        (whichever one we specify when we run the file). It passes in the address from above 
+                        to the contstructor function of the contract, which is how it knows which oracle it's supposed to 
+                        interact with when users try to interact with our contract. So like if we were deploying to the 
+                        Rinkeby test net then our FundMe contract would be compiled with the address of the smart contract 
+                        on the Rinkeby blockchain which pulls from the Chainlink oracle. But if we were deploying to the 
+                        local fork of the Ethereum mainnet, then our FundMe contract would be compiled with the addresss of
+                        the smart contract on Ethereum blockchain which pulls from the Chainlink oracle. Make sense? 
+
+                        When we deploy, we also specify whether we want to verify our source code. We explain what that means 
+                        in the VERIFICATION section below. We only want to verify if we're pushing code to a live net, not to 
+                        a local net (neither a mainnet fork nor a ganache test chain). And so we specify all this in our config 
+                        file. In this project the only chain we'd want to verify our code would be the rinkeby test net.
+
+3. TESTS
+
+        A. test_fund_me.py:     This file lays out two functions: test_can_fund_and_withdraw() and test_only_owner_can_withdraw().
+
+                                test_can_fund_and_withdraw() deploys our FundMe contract and checks to see if we can deposit 
+                                some funds and the withdraw those funds successfully. 
+
+                                test_only_owner_can_withdraw() checks to make sure that an address that isn't the creator's 
+                                can't withdraw funds from the contract.
+
+4. CONFIG 
+
+        A. brownie-config.yaml: This file lays out which solc version we should be using, and which addresses we should be
+                                using for the oracle for different chains. We also specify whether we should be publishing 
+                                the source code of our contracts depending on the specific chain. We're also telling brownie 
+                                where to pull the chainlink packages from.
+
+
+
+CONTRACT VERIFICATION 
+We signed up for an account on etherscan and we got an API key so that we can verify our smart contracts.
+If we have a verified contract on Etherscan that means that users can interact with our contracts directly 
+using their UI on the site. So if we have functions and variables on our contract, there will be boxes to 
+interact with them directly from the site. Users can link up their metamask wallets as well and interact 
+with the contracts with their own addresses.
+
+To verify the contract, you have to copy/paste in the solidity code you used for the contract on Etherscan. You pick 
+the compiler version you used, etc. And then users will be able to see the actual code. So basically, 
+if you tell a bunch of people, hey here's my smart contract that we can all use for this thing, those 
+people can take the address of the contract, and then go to Etherscan and read the actual code of the 
+contract. 
+
+Because your actual code isn't stored on the bockchain. What's stored on the blockchain is EVM Bytecode. 
+Solidity gets compiled to something called the EVM bytecode which gets deployed to the Ethereum blockchain. 
+This is very similar to a programming language like Java where the code gets converted to JVM Byte code. The 
+Ethereum runtime environment only understands and can execute the bytecode.
+
+So you can do all that manually, but there are compilcations because oyu have to flatten the code in order 
+to verify it manually. Alternatively you can just use the API token to do it programmatically, which is what 
+we did. When we deploy we just note `publish_source=True` which makes sure that we publish our source code.
+And so now we can see our source code in Etherscan. We put our API key into our env variables.
+
+
+CONSTURCTOR FUNCTION 
+We needed to change the constructor function to take in input. The input being the address of the smart contract 
+which pulls the ETH/USD conversion rate via the Chainlink oracle. Before we had hardcoded the address in to our 
+smart contract, but now we're passing it in as input. So it's robus to new addresses. We pass in the desired input 
+via our scripts/deploy.py file. 
+
+
+
+MOCKS
+The problem is that in this contract we're using a smart contract to pull the ETH/USD conversion rate via the 
+Chainlink Oracle. However this cmart contract has been deployed in the past and thus is located at a particular 
+address on the chain. As in Chainlink has deployed a contract to the Rinkeby chain and presumably they've also 
+deployed one to the Ethereum chain etc etc.
+
+But if we want to work with a local chain, then we wont' be able to pull in that data because the smart contract 
+in question won't be defined on the local Ganache Chain. There are a couple ways to solve this:
+
+1. FORKING 
+This is where we fork an on net chain to be local and then we interact with the fork in a testing environment. 
+
+2. MOCKS 
+This is where we would deploy a fake smart contract on our local chain which simulates the real smart contract 
+that we'd use on a live net. We generally store these contracts in a test folder within our contracts folder. 
+We called the contract MockV3Aggregator and we pulled the code from the chainlin-mix/contracts/test repository. 
+They just had a good template for the contract so it was just easy to pull it from them. Note that the point of 
+doing this is just to test whether our dapp is able to pull from a smart contract like this, but not necessarily 
+to pull the accurate information (the mock is just a test contract).
+
+
+ADDING GANACHE LOCAL CHAIN TO BROWNIE NETWORKS LIST (MAKE IT PERSISTANT)
+We do `brownie networks add Ethereum ganache-local http://127.0.0.1:7545 chainid=1337
+We need to do this otherwise when we deploy contracts etc. Brownie won't remember our deployments and 
+so it wont' store them in our build/deployments folder.
+
+
+We installed `pip install pytest`
+
+
+MAIN-NET FORK 
+If we want to work with the real ETH network but not actually, we can just fork the chain and work with it locally. 
+In our dapp here, we do this because _______ We don't want to deploy a mock, but we do want to pull from our config file for the address, and we do want it to create a new account for us with some fake ETH
+We created an account with Alchemy to fork the chain because Infura is a bit buggy sometimes. Alchemy just raised again and 
+in one year went from 500m to 10B. Jesus.
+
+Here's the command we ran to create a fork:
+`brownie networks add development mainnet-fork-dev cmd=ganache-cli host=http://127.0.0.1 fork=https://eth-mainnet.alchemyapi.io/v2/tdz6hdVAWGnl0RkO1oO6E1anfqCNlVwg accounts=10 mnemonic=brownie port=8545
+
+So now we can run brownie run scripts/deploy.py --network mainnet-fork-dev
+
+
+Do to get everything to work:
+First: `brownie compile`
+Then:
+
+To deploy to a local Ganache chain we do: `brownie run scripts/deploy.py`
+
+To deploy to the Rinkeby test net we do: `brownie run scripts/deploy.py --network rinkeby`
+
+To deploy to a fork of the Ethereum mainnet:
+First we create a fork: `brownie networks add development mainnet-fork-dev cmd=ganache-cli host=http://127.0.0.1 fork=https://eth-mainnet.alchemyapi.io/v2/tdz6hdVAWGnl0RkO1oO6E1anfqCNlVwg accounts=10 mnemonic=brownie port=8545
+Then: 
+
+
+
+Jesus christ this was an intense lesson even though technically it was onyl an hour long.

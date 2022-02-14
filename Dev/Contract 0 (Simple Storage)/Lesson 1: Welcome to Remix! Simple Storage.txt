@@ -1,0 +1,90 @@
+uint256 means you're declaring a variable of type unsigned integer, and it can use up to 256 bits. 
+So 32 bytes because 8 bits in each byte. So it can be up to like 430 million or something in decimal.
+
+
+Variables are actually just a variable call to return whatever the variable is. <- this is really interesting actually (@ 1:43:45)
+
+
+Visibility and Getters
+
+Solidity knows two kinds of function calls: internal ones that do not create an 
+actual EVM call (also called a “message call”) and external ones that do. Because 
+of that, there are four types of visibility for functions and state variables.
+
+Functions have to be specified as being external, public, internal or private. For 
+state variables, external is not possible.
+
+external
+    External functions are part of the contract interface, which means they can be 
+    called from other contracts and via transactions. An external function f cannot 
+    be called internally (i.e. f() does not work, but this.f() works). External 
+    functions are sometimes more efficient when they receive large arrays of data, 
+    because the data is not copied from calldata to memory.
+
+public
+    Public functions are part of the contract interface and can be either called 
+    internally or via messages. For public state variables, an automatic getter 
+    function (see below) is generated.
+    
+internal
+    Those functions and state variables can only be accessed internally (i.e. from 
+    within the current contract or contracts deriving from it), without using this.
+
+private
+    Private functions and state variables are only visible for the contract they 
+    are defined in and not in derived contracts. 
+
+Making a transaction or sending a message to the blockchain, etc. are all the same 
+thing really. Nominally, they're interchangeable. So they all cost gas fees etc.
+
+There are two keywords that define functions that you don't actually have to make 
+transaction on: 
+1. view
+2. pure
+
+VIEW
+View just means you're reading something from the blockchain. So we're not actually 
+making a state change so there doesn't need to be a transaction. So you just add 
+the word `view` to your function. Variables are view functions. So they just 
+return their state, and don't require any state change so no need to interact with 
+the blockchain. The `view` part is assumed though, you don't have to write it out 
+explicitly.
+
+
+PURE 
+Pure is used when you want a function that just does some pure math and nothing else. 
+So again, no need to alter the blockchain. 
+
+So the way we initialize variables is as follows: `type visibility name`
+Example: uint256 public favoriteNumber
+
+
+STRUCT
+You can create new `types` in Solidity by using structs. Pretty much like creating 
+a new class in Python.
+
+
+STORAGE
+In Solidity there are two ways to store information. In memory, or in storage. 
+
+
+MEMORY 
+If you store an object in memory, it means that it will only be stored during the
+execution of the function or the contract call.
+
+
+STORAGE 
+If you store an object in storage, it means that it will persist even after the 
+function executes.
+
+
+STRING 
+In Solidity `string` is actually not a value type. It's an array of bytes. So a 
+variable of type `string` is actually a special type array. So since strings in 
+this case are objects, we have to decide where to store them, either in memory 
+or in storage. So when we use a parameter that's going to be a string for one of 
+our functions, we need to init it as `string memory`.
+
+
+EVM 
+Ethereum Virtual Machine

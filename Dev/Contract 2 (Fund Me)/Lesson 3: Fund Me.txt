@@ -1,0 +1,67 @@
+PAYABLE 
+You specify a function as "payable" when you want it to be able to receive payment.
+
+MSG.SENDER & MSG.VALUE
+msg.sender and msg.value are keywords in every contract call and transaction. So 
+can use those variables to specify your functions.
+
+2:43
+INTERFACE 
+An interface is basically like a struct or a class, it's just that it's more
+of like a template of commands we can use on other contracts. So in contract 1.2 
+we're basically downloading the interface from the npm package/chainlink. And then 
+we're using the functions it describes to call them on the contract located at 
+the address Chainlink gives us as their ETH/USD conversion. And that gives us the 
+current price of ETH. 
+
+Under the hood, interfaces actually compile down into ABIs, application binary interfaces. 
+Which is what tells solidity and other programming languages how it can interact with 
+other contracts. So it tells solidity how to call functions on other contracts in 
+lower level code. Generally, anytime you want to interact with another contract in
+solidity you're going to need that contracts ABI. 
+
+ORACLES
+We have to use the test net to interact with oracles, because the oracle contracts are 
+actually stored on a blockchain, we won't be able to find it on the JS VM. For example 
+here in contract 1.2, where we're getting the ETH/USD coversion.
+
+3:00:00
+Versions of Solidity below 0.8 don't have automatic integer overflow protections. 
+So keep that in mind if you're going below that for some reason.
+
+CONSTRUCTOR
+A constructor gets called the instant your contract gets deployed. So it's where 
+we can spcify state variables of the contracts we deploy, like the fact that our 
+address is actually the creator's address, etc.
+
+So `msg.sender` is the address of whoever is interacting with the smart contract. It could be
+the creator of the contract or it could be some other random person. The first time we deploy 
+a contract, the msg.sender is the contract creator. So we can use the `constructor` object 
+to initialize that. 
+
+
+SMART CONTRACTS
+Smart contracts have their own "balances" and addresses, etc. I'm guessing that smart 
+contracts are really just "units" in the same sense that each account is a unit. So they 
+themselves are units. And people can interact with those units just as they would with 
+normal units when they're trying to send coins between accounts etc. It's a pretty magical 
+adaptation of accounts really. Like because "accounts" aren't actually stores of value, they're just 
+mathematical proofs that you could one day send your ownership of particular coins to someone else, 
+smart contracts can be initialized as accounts themselves. And we can interact with them through 
+the same system we'd use to interact with accounts that users use for "noraml" transactions. So when 
+you send funds to contract, they are added to the UTXOs of the contract, just like a normal account.
+
+
+
+MODIFIER
+A modifier is used to change the behavior of a funciton in a declarative way. In English, what 
+this means is that if you want a function to only be callable by the contract creator, then 
+you can create a modifier which checks if the msg.sender is the contract owner, and then on 
+any function you want to incorporate that modifier you specify it as a parameter when 
+defining the function. Example in contract 1.2.
+
+Alternatively you could just check to see if the address is from the owner within each function, 
+but modifiers help with refactorization and scalability.
+
+Basically we can initialize modifiers as functions that can be repeatedly called accross multiple 
+primary functions in our contract.

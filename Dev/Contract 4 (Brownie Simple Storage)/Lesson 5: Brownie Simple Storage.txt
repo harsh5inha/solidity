@@ -1,0 +1,82 @@
+
+So Contract 4 basically shows us how to deploy our Simple Storage contract and then to update the favoriteNumber 
+variable of the contract via Brownie. We set up a couple tests in the testing file, and our read_value file 
+simply reads off a few of the state values from all the contracts we deployed to any live chains in this project.
+
+
+
+
+
+BROWNIE
+Most popular blackchain platform. Built on Web3.py (Python).
+
+So we installed pipx with the command
+`python3.6 -m pip install --user pipx`
+
+And then we added it to out path variables by running 
+`python3.6 -m pipx ensurepath`
+
+And then we installed brownie via 
+`pipx install eth-brownie`
+
+To create a new Brownie project all we have to do is run `brownie init` and 
+then all the necessary folders will be created.
+
+
+FOLDERS CREATED
+1. Build: Tracks a lot of the low level information. INterfaces, deployemnets, contracts (all the compiled code).
+2. Contacts: This where we put all of our contracts. Brownie knows to look here. 
+3. Interfaces: 
+4. Reports: 
+5. Scripts: where we can store scritps which can do various tasks we want it to do. 
+6. Tests: 
+
+When we run `brownie compile` it will compile our solidity contracts and store the compiled code in the build/contracts 
+folder. (Brownie will read the version of solidity from the top of our contract and figure out how to compile it without us 
+having to write the comilation code.)
+
+Brownie defaults to always working within a local Ganache CLI blockchain. But we can use the `network` module to 
+specify a different chain if we want. As we did in contract 4.
+
+
+ACCOUNTS PACKAGE 
+This package helps us create some test accounts to work with. There are three ways we can work with accounts. We can:
+1. Use the test accounts the package spins up 
+2. We can encrypt our own private keys into the brownie tool
+3. We can use environment variables like normal.
+
+I'm going with optino 3 here because that's what I'm used to, but when dealing with an actual ETH network address, should 
+probably go with option 2 as it's the safest. 
+
+
+
+SCRIPTS 
+we can run `brownie run scripts/deploy.py` to run the deploy.py script.
+And we run `brownie run scripts/read_value.py`
+But to run these on a live chain we'll have to use the commands below in the NETWORK section.
+
+
+TESTS 
+The brownie testing infra is based on pytest, so can just look there to see how to run more robust tests. 
+We can do `brownie test` to run our tests.
+To test just one fucntion we do `brownie test -k {name_of_function}`
+
+
+
+
+NETWORK 
+The networks package allows us to work with different networks
+We can do `brownie netowrks list` to see all the networks 
+We do `brownie run scripts/deploy.py --network rinkeby` to tell brownie which network we want it to run our contracts on.
+Same for `brownie run scripts/read_value.py --network rinkeby`
+
+
+DEPLOYMENTS 
+Whenever we actually deploy anything to an actual live blockchain (non local) then we can see those outputs in our 
+build/deployments folder. Each deployment will be saved under a folder with the chain ID of whatever network we 
+deployed to. So for the Rinkeby testnet the filepath would be build/deployments/4.
+
+
+BROWNIE CONSOLE 
+Can do `brownie console` that puts us in to a shell that has all our contracts and everything already imported. 
+Can exit by doign quit()
