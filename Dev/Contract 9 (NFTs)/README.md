@@ -13,6 +13,10 @@ Then we do `brownie run scripts/advanced_collectible/set_tokenuri.py --network r
 
 Then we can go to Opensea and look up our NFT contract address and we'll see our NFTs! Because Opensea knows how to pull in the images and metadata from IPFS for any ERC721s deployed on Rinkeby (or mainnet as well obv).
 
+If you can't see your NFTs, check your tokenURI and imageURI outputted from the create_metadata.py file. Make sure they're loading the expected output. If not, it could be because your IPFS node isn't active anymore. So you'll have to spin that up again in a separate terminal window by doing `ipfs daemon`. OR if you're hosting on IPFS via Pinata or something then that shouldn't be an issue. 
+
+If you still can't see it, then request OpenSea to refresh the metadata. Should take a minute and then you'll be able to see it so long as the contract is deployed to the chain, the tokenURI is valid, and the imageURI is valid.
+
 
 
 FILE STRUCTURE

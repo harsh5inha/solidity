@@ -59,6 +59,6 @@ def upload_to_ipfs(filepath):
         response = requests.post(ipfs_url + endpoint, files={"file": image_binary}) # This makes a post request with the file to the endpoint
         ipfs_hash = response.json()["Hash"] # The API returns a few items, we're grabbing the has of the image (IPFS hashes everything stored on it so it's pretty easy to just work with the hashes. As always, if you change even one pixel, the hash changes completely.)
         filename = filepath.split("/")[-1:][0] # This basically turns "./img/0-PUG.png" into "0-PUG.png"
-        uri = f"https://ipfs.io/ipfs/{ipfs_hash}?filename={filename}" # finally, this is the format is our final IPFS tokenURI. This is what we need.
+        uri = f"https://ipfs.io/ipfs/{ipfs_hash}?filename={filename}" # finally, print out the IPFS tokenURI/imageURI. This link will take us to where our data/image is stored on IPFS.
         print(uri)
         return uri
