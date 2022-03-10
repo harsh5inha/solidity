@@ -1,0 +1,12 @@
+dependencies:
+  # - <organization/repo>@<version>
+  - OpenZeppelin/openzeppelin-contracts@4.5.0
+compiler:
+  solc:
+    remappings:
+    # below we're telling brownie, whenever you see the word "openzeppelin" in our OurToken.sol file, sub in the github repo to the right
+    # We have to do this because otherwise in OurToken.sol, brownie won't know how to pull from npm
+      - '@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.5.0'
+dotenv: .env
+wallets:
+  from_key: ${PRIVATE_KEY}

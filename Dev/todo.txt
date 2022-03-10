@@ -13,6 +13,24 @@ Lesson 0
 - Sections 8-12 of the Bitcoin whitepaper
 
 
+Lesson 7
+- When do we specify public vs. internal vs. external etc.
+- When do we specify view vs. not
+- When do we specify "returns (uint256)" vs. not etc.
+
+
+Lesson 9
+***** What actually are tokens. They're smart contracts? But they have coins assosiated that can be sent? Don't really understand it. 
+
+
+Lesson 10
+- ZK ROllUPS 
+- AAVE V2 vs. AMM MARKET  vs. AAVE POLYGON
+- ADDRESS PROVIDER REGISTRY
+
+
+
+
 
 
 
@@ -21,3 +39,59 @@ General:
     - https://www.businessinsider.com/metaverse-crypto-land-surging-investor-explains-how-to-pick-property-2021-12?fbclid=IwAR1IVXkeh9wzLozcoFO2VKqMF6g-QqrMydIF8xWL3QHEir4bWmcc-_hWmts
 2. Use the Brave browser?
 3. Distributed File Storage?
+
+
+
+
+
+
+PHIOSOPHY
+I mean if we go back to first principles, like what's even the value add of Botcoin? It 
+just allows finance to be decentralized. Why is that good? Because there's so central bank?
+Idk, is that good? I feel like good monetary policy can help economies.
+
+What are the other value adds of bitcoin?
+It's public? 
+
+What about Ethereum?
+
+
+
+
+So like Robinhood doesn't actually have a wallet so you don't actually own the coins. So you 
+could make fun of people for that, but also like there are tons of Gold ETFs where you don't actually own 
+the gold and it's not clear why anyone values gold. So maybe don't make fun of them? 
+And also you don't need to understand how the fed works to have a bank account. But that said you 
+probably do need to understand how it works to be really good at the financial markets. But do you to be good at 
+business? Maybe at enough scale sure. So what's the parralell here. Do you need to learn all this shit actually?
+Well I'm doing this based off my curiosity heuristic so whatever. 
+
+
+
+SIMPLE EXPLANATION
+Ultimately accounts function as units of three numbers, which are mathematically linked: private key, public key, address.
+If there's something you are forgetting or don't understand, don't worry, you can figure it out just by reading this doc. 
+If there's some minutia which you don't understand, then the simplset explanaition is probably pretty close to the truth. 
+You've already learned all this stuff, there is no magic. These are machines doing basic math.
+
+
+
+
+
+
+
+
+
+
+
+The main value add of all of this truly seems to be creating a web/internet/digital metaverse in which there is no 
+centralization. Humanity can build collectively. Everything on chain. 
+
+
+
+GENERAL 
+Above all, just remember that code and apps and CS and allt his stuff, is ultimately just a bunch of lego 
+blocks that all depend on each other. And when you dig down deep enough, all that's happening is some 
+switches are being fliipped on and off. ANd all you're trying to do is flip the right switches in the 
+right order. That's all it is. Don't get overwhelmed by semi colons. It's all just 1 + 1 = 2 at the end 
+of the day. 

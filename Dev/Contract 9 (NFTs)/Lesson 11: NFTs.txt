@@ -1,0 +1,168 @@
+It's important to understand that NFTs don't prove ownership of images or metadata or 
+anything like that. They prove ownership of a token whcih maps to an image/metadata, 
+etc.
+
+
+NFTs
+Non Fungible Token. NFTs are functionally any contract on chain that satisfies the ERC721 standard. 
+So you can implement the standard through an interface but then you can add some functions of your 
+own if you want. So they can be customized in terms of variables and functions etc. So long as 
+all the ERC721 requirements are met, it's an NFT. 
+
+In general, when people say "NFT" they mean an image. But it's actually a contract. And it's 
+actually a contract that could refer to multiple images (or even things that aren't images). 
+There is a public history of who's owned the items in an NFT, who's deployed them etc. NFTs 
+are just a token standard, so they can be much more than just art. But right now the most 
+common use case is art.
+
+To actually store the art on chain though, is incredibly expensive. Like a million dollars per 
+KB. So users will store the image and metadata off chain. So what happens is you map a tokenID to 
+a token URI in your NFT which directs people either to an ipfs location or to a private API. Those 
+requests will return certain information like the name, description, and other metadata. In 
+that metadata you'll also inlude an image URI which links to an external image, typically on
+IPFS or a private API as well. These are not fully decentralized sources, and so if something 
+happens and your API goes down or something happens with IPFS (which is pseudo decentralized) 
+then you'll lose access to your NFT. 
+
+Remember that "Token" really just means "contract deployed on a chain which stores mapping 
+between addresses and balances". ERC20 and ERC721 are both standards for creating tokens. 
+For ERC20s the mapping is pretty simple. We have address -> balance. However for ERC721s, the 
+"balances" of the token are not interchangeable. Hence, non-fungible. This is because the 
+mapping is addresses to tokenIDs, and then another mapping of tokenIDs to tokenURIs. So 
+address -> tokenID -> tokenURI. (And if we want to go all the way from owner to image it's 
+address -> tokenID -> tokenURI -> imageURI.) A "collection" is what you call the group of 
+tokenIDs and thus tokenURIs which all belong to the same NFT contract. So basically all of 
+the metadata and images that are contained within an NFT contract are all part of a collection.
+
+And so you can't just swap ownership of tokenID 0 from user A to user B in exchange for 
+tokenID 1, because they point to different URIs, and thus different attributes and images, etc. 
+So it's not a fungible transfer in the same sense that it would be if you changed balances 
+in an ERC20.
+
+One important thing to note is that different NFTs can use the same tokenIDs in their mappings. 
+As in one NFT could map an address to tokenID == 0. And a different NFT could do the same. 
+Because the tokenIDs only need to be distinct within the contract. Similarly, different NFTs 
+can use the same tokenURI in thier mappings. So that means that it is technically possible to 
+create multiple NFTs that all map to the same imageURI. You can do this in the same 
+collection, as well as across multiple collections. It's not possible to prevent someone 
+from mapping to a link of a public resource, i.e. from creating another NFT representing the 
+same image. An NFT only proves ownership of the token - not copyrights of the image. This is 
+important to understand. Also, it proves ownership by an address - not by a person. Because 
+there can be zero to multiple people holding a private key to the same address (holding the 
+NFT representing the image).
+
+
+TOKENID
+We have a mapping in our NFTs of addresses -> tokenID. This proves who owns which 
+tokenIDs in an NFT contract.
+
+
+TOKENURI 
+We have a mapping in our NFTs of tokenID -> tokenURI. This proves which URIs correspond to 
+which tokenIDs in an NFT contract. A tokenURI on an NFT is a unique identifier of what the 
+token "looks" like. A URI could be an API call over HTTPS, an IPFS hash, or anything else 
+unique. They follow a standard of showing metadata that looks like this:
+
+{
+    "name": "name",
+    "description": "description",
+    "image": "https://ipfs.io/ipfs/QmTgqnhFBMkfT9s8PHKcdXBn1f5bG3Q5hmBaR4U6hoTvb1?filename=Chainlink_Elf.png",
+    "attributes": [
+        {
+            "trait_type": "trait",
+            "value": 100
+        }
+    ]
+}
+
+These show what an NFT looks like, and its attributes. The image section points to another 
+URI of what the NFT looks like. This makes it easy for NFT platforms like Opensea, Rarible, 
+and Mintable to render NFTs on their platforms, since they are all looking for this metadata. 
+So the above isn't stored on chain, just the URI is, which, when put in to your browser, returns 
+the above. 
+
+
+OFF-CHAIN METADATA vs. ON-CHAIN METADATA
+Now you might be thinking "wait... if the metadata isn't on-chain, does that mean my NFT 
+might go away at some point"? And you'd be correct. You'd also be correct in thinking that 
+off-chain metadata means that you can't use that metadata to have your smart contracts interact
+with each other. This is why we want to focus on on-chain metadata, so that we can program 
+our NFTs to interact with each other.
+
+We still need the image part of the off-chain metadata, though, since we don't have a great way 
+to store large images on-chain. But don't worry, we can do this for free on a decentralized 
+network by using IPFS. 
+
+
+ERC721
+This is the main standard for NFTs. As we know, ERC20s (tokens), are contracts that basically
+just map addresses to the amount of tokens that address holds on the contract. For ERC721s, 
+the mapping is for tokenID -> address and tokenID -> tokenURI.
+
+
+ERC1155
+Semi-fungible tokens.
+
+
+IPFS 
+Interplanetary file system. It's a protocol and peer-to-peer network for storing and 
+sharing data in a distributed file system. IPFS uses content-addressing to uniquely 
+identify each file in a global namespace connecting all computing devices.
+
+So basically, we can add our computer to the IPFS network and use it as another 
+node in the global database. We did that for this contract, we downloaded the 
+command line tool for IPFS. So we did: 
+`curl -O https://dist.ipfs.io/go-ipfs/v0.11.0/go-ipfs_v0.11.0_darwin-amd64.tar.gz`
+`tar -xvzf go-ipfs_v0.11.0_darwin-amd64.tar.gz`
+`cd go-ipfs`
+`bash install.sh`
+`ipfs --version`
+
+There's also a GUI we could use, but command line obviously is how we do it 
+programatically.
+
+We mostly work with the /api/v0/add API endpoint, because that's the endpoint 
+that's going to help us add our files to IPFS. 
+
+Then to initialize our computer as a node we do:
+`ipfs init`
+
+This sets up the IPFS directory and settings files etc. It also give us a peer identity, 
+which is our node’s ID. Other nodes on the network use it to find and connect to
+us. We can run `ipfs id` at any time to get it again if we need it. Our peer identity is 
+`peer identity: 12D3KooWLSkYCVYrqSXsg8wwyyeAiVgoViWs9rBNRGLYKDRjigG5`
+
+It will also give us a command to run to get started. For us it was: 
+`ipfs cat /ipfs/QmQPeNsJPyVWPFDVHb77w8G42Fvo15z4bG2X8D2GhfbSXc/readme`
+
+After running this we get a welsome message saying that we're interacting with IPFS. 
+
+Then to take our node online (run our own IPFS node) we do:
+`ipfs daemon`
+
+It'll output a bunch of stuff and will give us a WebUI, which is basically the 
+address for our IPFS URL. And now our copmuter is running an IPFS node!
+
+The way it works is that if we deploy our images to our IPFS node, then our images 
+will be hosted there. But if we decide to stop running our node (end the daemon process)
+then the image won't be able to be found unless someone else pins your image to their 
+node (hence the pseudo decentralization). So people also upload their images to Pinata, 
+a third party IPFS file management service, they'll pin whatever we have in our node.
+
+
+
+
+
+NFT COLLECTION 
+A "collection" is what you call the group of tokenIDs and thus tokenURIs which all belong to the 
+same NFT contract. 
+
+
+EVENT 
+It's generally good practice to emit an event when you add a mapping allegedly.
+
+
+OPENSEA 
+An online marketplace for buying and selling NFTs. The opensea marketplace for testnets 
+right now only works with Rinkeby. So we're using Rinkeby in our sample NFTs here just 
+so that it all pulls through to the test version of Opensea.

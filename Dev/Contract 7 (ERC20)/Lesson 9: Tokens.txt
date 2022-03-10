@@ -1,0 +1,137 @@
+LESSON 9 
+
+ERC20, ERC677, EIPS, TOKEN STANDARDS
+
+TOKENS 
+Generally tokens are just cryptocurrencies built on top of an existing blockchain. So currencies 
+without their own blockchain. 
+
+Much of the confusion surrounding tokens comes from two concepts getting mixed up: token contracts 
+and the actual tokens.
+
+A token contract is simply an Ethereum smart contract. "Sending tokens" actually means "calling a 
+method on a smart contract that someone wrote and deployed". At the end of the day, a token contract 
+is not much more than a mapping of addresses to balances, plus some methods to add and subtract 
+from those balances.
+
+It is these balances that represent the tokens themselves. Someone "has tokens" when their balance 
+in the token contract is non-zero. That’s it! These balances could be considered money, experience 
+points in a game, deeds of ownership, or voting rights, and each of these tokens would be stored in 
+different token contracts.
+
+
+
+TOKEN STANDARDS
+Even though the concept of a token is simple, they have a variety of complexities in the implementation. 
+Because everything in Ethereum is just a smart contract, and there are no rules about what smart 
+contracts have to do, the community has developed a variety of standards (called EIPs or ERCs) for 
+documenting how a contract can interoperate with other contracts. ERC20s can be used as governance 
+tokens, to secure an underlying network, to create a synthetic asset, or anything else really. ERC20s 
+are the standard for fungible tokens.
+
+
+ERC20
+The most widespread token standard for fungible assets, albeit somewhat limited by its simplicity.
+Tether, Chianlink, unitoken, Dai are all examples of ERC20s. Well technically the chainlink token
+(LINK) is an ERC677, which is basically just an ERC20 with a little more funcitonality (but its 
+still backwards compatible).
+
+To create an ERC20, all we have to do is create a smart contract that follows the token standard. 
+Which basically means just creating a smart contract that has a name() function a symbol() 
+function, a decimals() function a totalSupply() funciton etc. 
+
+There are 6 mandatory functions and 3 optional functions in every ERC20 token. ERC stands for 
+Ethereum Request for Comment. 
+
+Optional
+1. name 
+2. symbol
+3. decimals (how dividable your token is, how many decimals it should support)
+
+Mandatory
+1. totalSupply() -> when reached, smart contract will refuse to create new tokens 
+2. balanceOf() -> returns how many tokens an address has
+3. transfer() -> takes tokens from total supply to users
+4. transferFrom() -> moves tokens from user to user 
+5. approve() -> verifies that your contract can give a certain amount of tokens to a user given enough tokens in totalSupply
+6. allowance() -> checks if user has enough balance to send tokens to others
+
+
+
+
+ERC721
+The de-facto solution for non-fungible tokens, often used for collectibles and games.
+
+ERC777
+A richer standard for fungible tokens, enabling new use cases and building on past learnings. 
+Backwards compatible with ERC20.
+
+ERC1155
+A novel standard for multi-tokens, allowing for a single contract to represent multiple fungible and 
+non-fungible tokens, along with batched operations for increased gas efficiency.
+
+
+
+
+
+CLAIMING TOKENS ON METAMASK
+When we claim tokens on metamask, we can only claim them if we're claiming them to the account 
+that initialized the tokens. But sure, everyone on chain can see that the tokens were deployed 
+and what the token name is etc. In fact, we already "had" the tokens, we didn't need to claim 
+them at all. It's just that the wallet software isn't finding the tokens automatically and 
+letting you know that you own them. Once we send tokens to other addresses, then they'll be 
+able to claim their tokens.
+
+
+DECIMALS 
+Often, you’ll want to be able to divide your tokens into arbitrary amounts: say, if you own 5 GLD, 
+you may want to send 1.5 GLD to a friend, and keep 3.5 GLD to yourself. Unfortunately, Solidity 
+and the EVM do not support this behavior: only integer (whole) numbers can be used, which poses 
+an issue. You may send 1 or 2 tokens, but not 1.5.
+
+To work around this, ERC20 provides a decimals field, which is used to specify how many decimal places 
+a token has. To be able to transfer 1.5 GLD, decimals must be at least 1, since that number has a single 
+decimal place.
+
+How can this be achieved? It’s actually very simple: a token contract can use larger integer values, 
+so that a balance of 50 will represent 5 GLD, a transfer of 15 will correspond to 1.5 GLD being sent, 
+and so on.
+
+It is important to understand that decimals is only used for display purposes. All arithmetic inside the 
+contract is still performed on integers, and it is the different user interfaces (wallets, exchanges, etc.)
+that must adjust the displayed values according to decimals. The total token supply and balance of each account 
+are not specified in GLD: you need to divide by 10^decimals to get the actual GLD amount.
+
+You’ll probably want to use a decimals value of 18, just like Ether and most ERC20 token contracts in 
+use, unless you have a very special reason not to. When minting tokens or transferring them around, you 
+will be actually sending the number num GLD * 10^decimals.
+
+By default, ERC20 uses a value of 18 for decimals. To use a different value, you will need to override 
+the decimals() function in your contract. 
+
+So if you want to send 5 tokens using a token contract with 18 decimals, the method to call will actually be:
+`transfer(recipient, 5 * 10^18);`
+
+
+MINTING
+Minting is when new coins or tokens are created. So every time a new block is mined, new coins 
+are minted and provided to the miner. Or even in a PoS algorithm, every time a block is validated, 
+new coins are minted and provided to the validator. 
+
+
+BURNING
+“Burning” crypto means permanently removing a number of tokens from circulation. This is typically done by 
+transferring the tokens in question to a burn address, i.e. a wallet from which they cannot ever be retrieved. 
+This is often described as destroying tokens.
+
+In a similar way, algorithmic stablecoins automatically mint new tokens and burn them frequently to maintain 
+their dollar-pegged value. For example, if demand for the stablecoin rises and the price diverges above its 
+dollar peg, the protocol’s smart contract will automatically issue a number of new tokens to bring the price 
+back down, and vice versa.
+
+Burning tokens can be similar to a company buying back its shares. The company “returns the value” to its shareholders 
+in this way. Crypto projects burn their tokens to achieve the same goal.
+
+So you basically just send the coins/tokens to made up, but still valid, addresses. Because presumably it will be 
+impossible for anyone to find the private key to claim those coins/tokens. So they're effectively gone. Like if I 
+accidentally send coins to an address and mispell the address while I'm typing it in. 

@@ -12,6 +12,7 @@ dotenv: .env
 # Below we're specifying which address to use as the oracle smart contract to get the ETH/USD conversion for various chains
 # We also specify whether to verify our source code or not depending on the chain we're deploying to
 networks:
+# If we don't specify a network, then "development" will be selected as the network
   default: development
   rinkeby:
     eth_usd_price_feed: '0x8A753747A1Fa494EC906cE90E9f37563A8AF630e'

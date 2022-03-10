@@ -29,6 +29,15 @@ Mapping
 
 
 
+Steps to create a project:
+1. get brownie set up etc
+2. `brownie init`
+3. `brownie compile` within a directory to turn our solidity files into 
+`brownie accounts list`
+
+To check the networks available in brownie we do `brownie networks list`
+To test on a particular network we do `brownie test --network {network name}` so for example `brownie test --network mainnet-fork-dev`
+To fork a mainnet from Alchemy, we do: 
 
 
 

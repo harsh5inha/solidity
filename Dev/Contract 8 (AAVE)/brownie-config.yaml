@@ -1,0 +1,22 @@
+dependencies:
+  - aave/protocol-v2@1.0.1 # this is a GitHub repository
+compiler:
+  solc:
+  # whenever we see "aave" in our app, we're telling the program to replace it with the below so that it can pull it in properly from GitHub
+    remappings:
+      - '@aave=aave/protocol-v2@1.0.1'
+dotenv: .env
+networks:
+  default: mainnet-fork-dev
+  kovan:
+    weth_token: '0xd0a1e359811322d97991e03f863a0c30c2cf029c' #this address is the Koven ETH address for the weth conversion
+    lending_pool_addresses_provider: '0x88757f2f99175387ab4c6a4b3067c77a695b0349' # this address is the Kovan contract that will get us the contract address to connect with AAVE
+    dai_eth_price_feed: '0x22B58f1EbEDfCA50feF632bD73368b2FdA96D541' #this address is the Kovan ETH address for the Chainlink DAI/ETH price feed
+    dai_token: '0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD' #this address is the Kovan ETH address for the DAI token (although It hink there's another token called DAI on Kovan, but we can just use this one. AAVE changes the address that it uses for its DAI token sometimes on Kovan so might need to update this.)
+  mainnet-fork-dev:
+    weth_token: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' #this address is the ETH mainnet address for the weth conversion
+    lending_pool_addresses_provider: '0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5' # this address is the mainnet contract that will get us the contract address to connect with AAVE
+    dai_eth_price_feed: '0x773616E4d11A78F511299002da57A0a94577F1f4' #this address is the ETH mainnet address for the Chainlink DAI/ETH price feed
+    dai_token: '0x6b175474e89094c44da98b954eedeac495271d0f' #this address is the ETH mainnet address for the DAI token
+wallets:
+  from_key: ${PRIVATE_KEY}

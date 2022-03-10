@@ -1,0 +1,439 @@
+DEFI 
+Decentralized Finance. There's a whole host of things set up here. Most of it revolves 
+around borrowning, lending, yield rates, trading, collateralization, liquidity pools, 
+etc. etc. I think a lot of it would make more sense if I actually understood traditional 
+finance better, but from what I understand, recreating the tradfi ecosystem in defi is 
+really important to enable all the same systems that we use in tradfi, like short 
+selling, derivatives, swaps, futures, etc. etc. But yeah like I said I'm not a finance 
+expert. But this is a large area of crypto right now. And obviously crypto started out 
+as a form of money so what did you expect lol. 
+
+
+
+SMART CONTRACTS
+Vending machine analogy makes sense here. Deterministic, code is law, etc.
+Can store, receive, and send payments algorithmically. 
+They are immutable. So they cannot be changed after being deployed. Which can be risky.
+
+
+
+CALL OPTION 
+A call option is a contract that gives the buyer, or holder, a right to buy an asset at a predetermined 
+price by or on a predetermined date. A call option is used to create multiple strategies, such as a 
+covered call and a naked call. 
+
+
+
+COVERED CALL 
+The term covered call refers to a financial transaction in which the investor selling call options 
+owns an equivalent amount of the underlying security. To execute this, an investor who holds a long 
+position in an asset then writes (sells) call options on that same asset to generate an income stream. 
+The investor's long position in the asset is the cover because it means the seller can deliver the 
+shares if the buyer of the call option chooses to exercise. 
+
+Basically, if you have a long position in a stock (just own the shares) you can sell a covered call 
+at some particular strike price & date. If, at the close of that date, the stock is below the strike price, nothing happens, and you keep the 
+premium that you made by selling the contract. If the price is above the strike price, then you have 
+to sell your shares at the strike price. So basically, if shares are currently $10, and you own 80 
+shares, and you sell a covered call for a $5 premium for 2 weeks from now at a strike price of $12, you'll end up 
+with 80 shares and $5 if the stock price is below $12. If the stock price is $14, then you'll end 
+up with $5 + $960 (80*12), even though the shares were actually worth $1,120 at $14. 
+
+If the stock price is above the strike price then a call option is "in the money", if it below the strike 
+price then it is "out of the money". The opposite is true for put options. 
+
+The higher the strike price you pick, the lower the premium you'll get paid for selling your call 
+(because the less likely it'll be that the stock price will be that high at the closing date).
+
+Generally it's advantageous to sell covered calls when you're comfortable holding the shares long 
+term even if the price goes down short term and yo're okay with not capturing the full profit if 
+the shares go up in the short term. 
+
+
+
+NAKED CALL 
+A naked call, or an uncovered call, is when an investor sells a call option without actually owning the 
+underlying shares. So using the covered call example from above, You can sell a naked call with a strike 
+price of $12 for 2 weeks from now and if the share price is below $12 then you keep the $5 premium. But 
+if the share price is $14, then you have to buy the 80 shares at $14 but then sell them at $12 to the 
+person who bought your call option. So you'd lose (14*80)-(12*80) = $160. But you'd still profit your 
+$5 from the premium so you'd lose $155 total. 
+
+Your losses when selling a naked call is theoretically unlimited given the stock price could rise towards 
+infinity. And the max profit is simply the premium that you are paid. So it's considered a risky strategy. 
+
+Actually the $5 premium value is definitely not to scale with the rest of the example. The premium will change 
+based on the stock price etc. I'm not super interested in thsoe details tbh lol. Let's just move on to the 
+technology and data aspects of this stuff lol. 
+
+Actually yeah I'm not 100% certain that this is actually how uncovered calls work, would re-check stuff 
+before implementing anything, particularly around the premium values and strike prices etc.
+
+
+
+wETH 
+Basically this is itself a smart contract to which you can send ETH and it will credit your balance 
+with an equivalent amount of wETH. wETH is the ERC-20 version of ETH. One you can claim an ERC20 
+then it becomes way easier to trade for other ERC20 tokens. Because decentralized platforms running 
+on Ethereum use smart contracts to facilitate trades directly between users, every user needs to 
+have the same standardized format for every token they trade. This ensures tokens don’t get lost 
+in translation.
+
+wETH stands for "wrapped" ETH. But when you "wrap" ETH, you aren't really wrapping so much as trading via 
+a smart contract for an equal token called wETH. If you want to get plain ETH back you need to "unwrap" it. 
+AKA trade it back for plain ETH.
+
+Steps are being taken to update the ETH codebase to make it compliant with its own ERC-20 standards. So 
+hopefully wETH won't be a thing in the future. Additionally, ERC-20 may be replaced by other standards as 
+problems and solutions arise. There's already a ERC223 in the works.
+
+
+wBTC 
+This is rougly the same thing as above, except bitcoin and ethereum are on different chains, so you can't 
+mix them. So there are a group of DAOs basically that publishes publicly like this is how much BTC we received 
+and this is how many wBTC tokens we minted on Ethereum. You have to pass their identity and anti-money laundering 
+tests and all but functionally you can send BTC to an address and receive a wBTC token in retrun, which is on the 
+Ethereum blockchain. But yeah you have to trust the DAOs controlling that conversion. 
+
+You could also like just swap your BTC for ETH on an exchange or something, but you couldn't do it on a DEX, 
+because all DEXes are on Ethereum because all the tokens have to be functioning on the same chain in order 
+to be exchanged in a decentralized way
+
+
+
+BRIDGE 
+A bridge is basically a way to move crypto assets between different blockchains. Guardians sign off on transfers
+between chains. These guardians can be DAOs. Bridges can use the "Wrapped" strategies from above. They basically 
+have a smart contract on each chain that they're bridging. So if the ETH contract gets a deposit, the guardians 
+sign off on minting new tokens on the other chain. And if that side gets a deposit of tokens, they are sure to 
+send the euqivalent amount of ETH back to the users on the ETH chain. 
+
+
+
+WORMHOLE HACK 
+So basically an attacker on Feb 2, 2022, manipulated the rust contracts on Solana into thinking that 120k ETH 
+had been deposited in to the ETH side of the bridge, and then they were able to mint 120k wETH on the Solana 
+chain. Then they transfer 90k of it back to ETH and sent it to their address, and the other 30k they transferred 
+in to SOL and USDC on the solana chain in their own addresses. Wormhole and Jump trading had to cover the $300m 
+hole by sending in more ETH to make the mapping return to 1:1. Otherwise lots of assets might have become under-
+collateralized. 
+
+
+
+AUTOMATED MARKET MAKERS
+Traditional exchanges match buyers and sellers directly through a central order
+book model. If either side of a trade lacks liquidity, then exchange-affiliated market
+makers are obligated to take that side of the trade. While some decentralized
+exchanges use a central order book model, our focus here will be on automated
+market makers (e.g., Uniswap).
+
+Automatic market makers (AMMs) create a market for each cryptocurrency pair. Let’s take
+ETH/DAI as an example. To start a liquidity pool, the initial investor would deposit the same
+dollar amount of ETH and DAI in the pool. For example, say that ETH is trading at $2000/ETH. If
+50 ETH are deposited in the pool, then that is worth $100,000, and so 100,000 DAI must be
+deposited in the pool at the same time. If this is happening on Uniswap, then anyone who
+wants to trade this pair on Uniswap can do so through this pool. The initial exchange rate of
+DAI/ETH will be the same as the market rate (since $100,000 of each was provided). If the
+initial exchange rate is not set at the market rate, then arbitrage relationships exist (e.g., if the
+rate is too low, then ETH can be bought from the pool and sold elsewhere for a profit; and if the
+rate is set too high, then ETH can be purchased elsewhere and sold to the pool for a profit).
+
+AMMs operate using a constant product rule. In our example above, there are initially 50 ETH
+and 100,000 DAI. This multiplies to 5,000,000. Any subsequent trades would have to keep the
+product of the amount of ETH and the amount of DAI constant. For example, if someone on
+Uniswap wants to purchase 1 ETH, then that would leave 49 ETH in the pool. Since the product
+must be constant at 5,000,000, that means that the amount of DAI after the trade occurs must
+be: (5,000,000)/49 = 102,040.82. Since the pool previously had 100,000 DAI, then the cost to
+the Uniswap user to purchase 1 ETH would be 2040.82 DAI (this comes from 102,040.82 –
+100,000). The difference of ~40 DAI from the initial exchange rate is referred to as SLIPPAGE and
+is explicitly stated for each Uniswap trade before an order is confirmed. The slippage here is
+~2%.
+
+However, consider a larger initial trade of 10 ETH (instead of the 2 ETH trade). That would have left
+40 ETH in the pool, and so there would need to be 125,000 DAI to keep their product constant at
+5,000,000. This means that those 10 ETH would be exchanged for 25,000 DAI at rate of 2500 DAI/ETH.
+The slippage here is much higher at 25%.15 In general, the smaller a trade is relative to the size of
+the liquidity pool, the lower the slippage rate. The opposite is true if a trade is quite large relative to
+the liquidity pool. The exchange rate changes based on the amount of each asset held. In general, if an exchange rate
+differs too greatly from that of other markets, arbitrageurs will help bring things back in line (in
+the manner mentioned above).
+
+For the initial liquidity pool, if a second person had wanted to invest in the liquidity pool, then
+they would have contributed ETH and DAI at the same 2000 DAI/ETH exchange rate. For
+example, if they had contributed 10 ETH and 20,000 DAI, then pool would have had 60 ETH
+(from 50 + 10) and 120,000 DAI (from 100,000 + 20,000). In this case, the constant product
+would have been 7,200,000 (from 60 * 120,000). From there, things would have operated
+similarly. 
+
+
+LIQUIDITY PROVIDERS
+In general, the liquidity providers receive LP tokens based on how much liquidity they
+provide a particular pool. Trades are executed with a 0.3% trading fee, and this revenue goes
+to the LP token holders of that pool. Some AMMs also provide liquidity providers with
+governance tokens for the exchange, so that the overall process is known as liquidity mining.
+
+Uniswap is the largest AMM, though PancakeSwap and SushiSwap also have high volume.
+
+The larger the liquidity pool, the less slippage there is for large trades. 
+
+Things like Balancer participate in what's called "liquidity mining".
+
+
+
+DEMAND AGGREGATORS
+Demand Aggregators like the 1Inch Exchange simply aggregate all of these AMMs so
+that a trader can immediately find and execute on the best price for a given trade
+across the whole ecosystem. Other demand aggregators include Matcha, Dex.AG,
+and Paraswap.
+
+
+
+
+PROOF OF HISTORY
+This is a concept that Spolana uses. Basically it's a way to cryptographically verify 
+passage of time between events. You basically hash some seed and then hash it again 
+and again, each time noting the number of times you've run it through the hash.
+
+There's no way to skip ahead and calculate future hashes without calculating all hashes leading 
+up to it. So the fastest way to calculate new hashes is by using a single core on one computer. 
+However, if a node is provided with a full hash table, it can verify that all the hashes are correct
+in parrallel, so nearly instantaneously. So that means a computer can check 300 hashes are correct 
+simultaneously, but it cannot compute 300 new hashes simultaneously, it has to calculate them 
+one by one because it doesn't know the next input until it recieves the prior output. So in 
+this was we have proof that time has passed. 
+
+The benefit to solana here is that each node can figure out when in time a particular block 
+occurred, without having to hear from other nodes. If the hashes are correct, then it proves 
+that the node spent the time to get to their last hash.
+
+
+
+SOLANA 
+Here is the documentation: https://docs.solana.com/introduction
+This section is pretty good if you ever want to go deeper on the technicals: https://docs.solana.com/cluster/synchronization
+This section for understanding propagation: https://docs.solana.com/cluster/turbine-block-propagation
+Leader selection: https://docs.solana.com/cluster/leader-rotation
+Here is the white paper: https://solana.com/solana-whitepaper.pdf
+
+Solana relies on both proof of history and proof of stake. It's generally a lot faster and higher load 
+capacity than Eth or Bitcoin, but criticized for being less decentralized and the network actually went 
+down for some time last year? But yeah you pay a fee to be a validator, and your computer needs to be 
+pretty advanced. But ultimately, it's still a public blockchain with address and smart contracts etc.
+
+
+
+
+
+
+YIELD FARMING 
+Basically where you try to maximize your return on investment by finding the best yields for your assets. 
+
+How can you earn these yield farming rewards? Well, there isn’t a set way to do yield farming. In fact,
+yield farming strategies may change by the hour. Each platform and strategy will have its own rules and 
+risks. If you want to get started with yield farming, you must get familiar with how decentralized 
+liquidity protocols work.
+
+We already know the basic idea. You deposit funds into a smart contract and earn rewards in return. But 
+the implementations can vary greatly. As such, it’s generally not a great idea to blindly deposit your 
+hard-earned funds and hope for high returns. As a basic rule of risk management, you need to be able to 
+remain in control of your investment.
+
+So, what are the most popular platforms that yield farmers use? This isn’t an extensive list, just a 
+collection of protocols that are core to yield farming strategies.
+
+
+COMPOUND FINANCE
+Compound is an algorithmic money market that allows users to lend and borrow assets. Anyone with an 
+Ethereum wallet can supply assets to Compound’s liquidity pool and earn rewards that immediately begin 
+compounding. The rates are adjusted algorithmically based on supply and demand. Compound is one of the 
+core protocols of the yield farming ecosystem.
+
+
+MAKERDAO
+Maker is a decentralized credit platform that supports the creation of DAI, a stablecoin algorithmically 
+pegged (via smart contracts) to the value of USD. Anyone can open a Maker Vault where they lock 
+collateral assets, such as ETH, BAT, USDC, or WBTC. They can generate DAI as debt against this collateral 
+that they locked. This debt incurs interest over time called the stability fee – the rate of which is set 
+by MKR token holders. The MKR token is used by holders to govern the DAO. Yield farmers may use Maker to 
+mint DAI to use in yield farming strategies.
+
+
+SYNTHETIX
+Synthetix is a synthetic asset protocol. It allows anyone to lock up (stake) Synthetix Network Token (SNX) 
+or ETH as collateral and mint synthetic assets against it. What can be a synthetic asset? Practically
+anything that has a reliable price feed. This allows virtually any financial asset to be added to the 
+Synthetix platform. Synthetix may allow all sorts of assets to be used for yield farming in the future. 
+Want to use your long-term gold bags in yield farming strategies? Synthetic assets may be the way to go.
+
+
+AAVE
+Aave is a decentralized protocol for lending and borrowing. Interest rates are adjusted algorithmically, 
+based on current market conditions. Lenders get “aTokens” in return for their funds. These tokens 
+immediately start earning and compounding interest upon depositing. Aave also allows other more advanced 
+functionality, such as flash loans. As a decentralized lending and borrowing protocol, Aave is heavily 
+used by yield farmers.
+
+When we deposit to AAVE in contract 8, what actually happens is we send a transaction to the 
+AAVE smart contract on chain. That contract is actually the wETH gateway, so it 
+keeps our ETH, mints a wETH, (an ERC20 token that represents the ETH for them to 
+use on their backend for trading), and they mint and send us back an aETH (aave 
+eth) which accumulates interest (they continue to send small bits of aETH to our 
+account as interest).
+
+However, in our app (contract 8), we're exchanging our ETH for wETH directly through a wETH 
+contract. When we deposit ETH to that address, it mints and returns some WETH to us.
+So we don't have to interact with the AAVE wETH gateway. We go straight to their lendingPool 
+contract with our wETH that we obtained directly.
+
+When we withdraw from AAVE, we send our aETH back to the contract, and they 
+return our regular ETH to us plus whatever interest we accumulated. Presumably 
+they also exchange the same amount of wETH into ETH in the backend before they
+then return the ETH to us so everythign stays balanced.
+
+The interest we get comes from the people who are paying us to borrow our assets.
+
+Borrowing can be risky if we borrow too much, because we could get liquidated if the price 
+of the assets change and we pass our approved threshold.
+
+You can use the Kovan testnet to interact with AAVE here: https://staging.aave.com
+
+
+
+UNISWAP
+Uniswap is a decentralized exchange (DEX) protocol that allows for trustless token swaps. Liquidity 
+providers deposit an equivalent value of two tokens to create a market. Traders can then trade against 
+that liquidity pool. In return for supplying liquidity, liquidity providers earn fees from trades that 
+happen in their pool. Uniswap has been one of the most popular platforms for trustless token swaps due 
+to its frictionless nature. This can come in handy for yield farming strategies.
+
+
+CURVE FINANCE
+Curve Finance is a decentralized exchange protocol specifically designed for efficient stablecoin swaps. 
+Unlike other similar protocols like Uniswap, Curve allows users to make high-value stablecoin swaps with 
+relatively low slippage. As you’d imagine, due to the abundance of stablecoins in the yield farming scene, 
+Curve pools are a key part of the infrastructure.
+
+
+BALANCER
+Balancer is a liquidity protocol similar to Uniswap and Curve. However, the key difference is that it allows 
+for custom token allocations in a liquidity pool. This allows liquidity providers to create custom Balancer 
+pools instead of the 50/50 allocation required by Uniswap. Just like with Uniswap, LPs earn fees for the 
+trades that happen in their liquidity pool. Due to the flexibility it brings to liquidity pool creation, 
+Balancer is an important innovation for yield farming strategies.
+
+
+YEARN.FINANCE
+Yearn.finance is a decentralized ecosystem of aggregators for lending services such as Aave, Compound, and 
+others. It aims to optimize token lending by algorithmically finding the most profitable lending services. 
+Funds are converted to yTokens upon depositing that periodically rebalance to maximize profit. Yearn.finance 
+is useful for farmers who want a protocol that automatically chooses the best strategies for them.
+
+
+TVL
+Total Value Locked. Basically the amount of crypto funds locked in to a particular defi protocol.
+
+
+INTEREST RATE SWAP
+Basically another Yield farming strategy where you swap tokens providing a particular yield over a particular 
+time perios for tokens of a different yield/time frame.
+
+
+INTERFACE
+An interface is basically a set of functions whose implementation is not defined. So functions whose inputs, 
+outputs, and types are all defined. But the actual funciton body is empty. They're basically skeletons 
+for contracts to make use of. However, we're expected to "override" the functions in order to 
+actually define their implementation.
+
+For practical purposes, applying an interface to a contract address allows us to interact with the contract 
+using the functions laid out in the interface. The actual definition of these functions is defined in the 
+contract itself, but including them in an interface on our side enables us to programmattically interact 
+with those contracts. For example, we've laid out an interface for ERC20s in contract 8. We apply that 
+interface to the contract address for the DAI token, which allows us to call the approve() function and 
+allow our DAI tokens to be sent to another address. This function is one of the standard functions that 
+must be included in all ERC20s. 
+
+So we basically are saying that our contract will have all functions laid out in the interface and that they will 
+have the inputs and outputs and types as specified in the interface. This is how we ensure that all ERC20s have 
+common functions etc. They all have balanceOf(), approve(), etc.
+
+Technically, the interface will compile down into an ABI, which will ultimately tell us how we can interact with a contract. 
+If we want, we can just type out the skeletons of the one or two specific functions we're going to use in the interface, 
+but generally it makes sense to go ahead and copy paste over the entire list of functions. 
+Basically, if we just include what we need, it will compile down in to an ABI and the ABI 
+will have all the functions that we're wanting to interact with on the contract. But in 
+general we can just go ahead and copy paste over all the functions. If excess functions 
+are included in the ABI but we don't use them, that isn't a problem. We've copy and pasted our interfaces 
+for contract 8, over from the Zeppelin docs.
+
+
+
+BINANCE
+This is an exchange for crypto. I think it's still the largest. Lower fees than Coinbase. They also have their 
+own coin called BNB. BNB was initially based on the Ethereum network as an ERC20 but is now the native currency 
+of Binance's own blockchain, the Binance chain. 
+
+
+
+POLYGON
+Developed by a few Indians. This is an L2 on top of Ethereum. A lot of DAPPs have shifted over to Polygon from 
+Ethereum. It makes ETH a lot faster, way lower gas, but maintains its security. It runs on proof of stake. Their 
+goal is basically to create infrastructure for an "internet of blockchains". They changed their name to Polygon 
+once they decided that they were going to be more of an infrastructure company opposed to a chain company. 
+
+The token of Polygon is called MATIC. Roughly $13B market cap, 10B total tokens, of which 6.8 are currently 
+in circulation. MATIC is an ERC20 token, so it's on the Ethereum blockchain.
+
+Its long-term goal is to enable an open, borderless world in which users can seamlessly interact with 
+decentralized products and services without first having to navigate through intermediaries or walled 
+gardens. It aims to create a hub that different blockchains can easily plug into, while simultaneously 
+overcoming some of their individual limitations—such as high fees, poor scalability, and limited security.
+
+Polygon uses a variety of technologies to achieve this expanded vision, these include:
+
+1. POS Chain: Polygon's main chain is an Ethereum sidechain known as the Matic POS Chain, which adds a 
+proof-of-stake (POS) security layer to blockchains launched on Polygon. So basically just take in a bunch 
+of transactions, batch them together, and then add them to the Ethereum chain all at once. This saves a ton 
+of time, and allows them to implement like 7,000 transactions per second. 
+
+2. Plasma Chains: Polygon makes use of a scaling technology known as Plasma to move assets between the root 
+chain and child chains via Plasma bridges.
+
+3. ZK-rollups: An alternative scaling solution used to bundle a large number of transfers off-chain into a 
+single transaction, using zero-knowledge proofs for the final public record on the Ethereum main chain.
+
+4. Optimistic rollups: A solution that runs on top of Ethereum to facilitate near-instant transactions through 
+the use of "fraud proofs".
+
+CAN YOU SEND A TRANSACTION ON POLYGON? HOW DOES THAT WORK?
+- But like, when I send MATIC to someone, that’s still a normal ETH transaction right?
+- Is it possible to send a Polygon transaction? Or is Polygon a network you can only create interactions with as a developer?
+
+
+
+HEALTH FACTOR
+Represents how close to being liquidated we are. Being close to 1, means that we're
+close. 
+
+
+GOVERNANCE TOKEN 
+This is a token that allows you to vote on particular things for an org or be part of a DAO. You don't have to 
+spend your tokens to vote or anything. Your wallet can prove you are a token holder in the same way it can prove 
+you can claim ETH etc.
+
+
+
+DERIVATIVE
+A derivative is a contract between two or more parties whose value is based on an agreed-upon underlying 
+financial asset, index, or security.
+Futures contracts, forward contracts, options, swaps, and warrants are commonly used derivatives. Derivatives can be used to either mitigate 
+risk (hedging) or assume risk with the expectation of commensurate reward (speculation).
+
+
+
+GRAPHQL 
+Gives you one single endpoint instead of the however many from a REST API. The data you get back
+depends on the query that you send to the endpoint, instead of which endpoint you send the data 
+to. So basically, GraphQL is a query language that gives the client the power to ask for exactly 
+what data they need. We can specify which fields we want retruned, and nothing else has to be 
+transmitted.
+

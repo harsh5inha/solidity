@@ -1,0 +1,122 @@
+ENUM 
+Are another way to create a user defined type in Solidity. There's an example in 
+the Lottery contract. Basically, it's a way for us to create a struct. We can 
+decide which state the object is in either by using the names we created, or 
+by using the index value.
+
+
+
+GLOBALLY AVAILABLE VARIABLES 
+These are variables that you can always access. Like msg.value and msg.sender. 
+There's a list of globally available variables in the solidity documnetation. 
+
+
+
+RANDOMNESS 
+Often times developers will take a hash of a few global variables like the 
+nonce, msg.sender address, block difficulty, and block timestamp to get a 
+random number to use in a smart contract. However, the problem with this 
+is that the nonce, msg.sender, and block timestamp are all predicatable, 
+and the block difficulty can be manipulated. So if you have a malicious 
+actor, they could hack the contract and predict the random number and thus 
+manipulate your program. So we should use the Chainlink VRF instead for 
+our random number generation needs.
+
+
+Chainlink VRF
+VRF Coordinator is the address of the contract on chain that is going to verify 
+that the return of the chainlink node is truly random. 
+
+The link token address is the address of the Chainlink token used as the payment 
+to the node for its services. 
+
+Keyhash uniquly identifies the chainlink node we're going to use. 
+
+fee is how much we're going to pay to the chainlink node for its services. 
+
+You can always check the latest addresses of VRF nodes and key hashes etc. on 
+the vrf-contracts page. 
+
+We have to actually send the contract LINK in order for it to execute. So 
+like if we want to execute the getRandomNumber() function, which pulls from 
+Chainlink, then the contract making the request has to have some funds at 
+its disposal. In this case, LINK tokens. And so we'd have to make sure the 
+contract is funded before we try to make the call. 
+
+
+REQUEST AND RECEIVE 
+So when we request the random number from Chainlink, that's one funciton 
+call. And when chainlink returns the information, that's another function. 
+This is the call and receive model. 
+
+
+
+ORACLE GAS 
+Gas we have to pay to oracles for thier services. We haven't had to pay oracle gas 
+for the priceFeed requests yet because there are a bunch of sponsors who are 
+subsidising all that. But now we're trying to get a random number from the oracle, 
+which isn't being subsidized. 
+
+
+
+
+
+
+6:45:00
+VRFCONSUMERBASE()
+This is the constructor of the 
+VRF Coordiinator address: This is the address of the contract that will check to make sure it's actually random
+LINK: this is the address where we'll send the oracle gas fees
+keyhash: this is the identifier of the chainlink node we're going to use
+Fee: how much link we're going to pay to the chainlink node for deliverin us the random number
+
+
+
+LINK
+This is the link token that Chainlin administers. Basically, this token is what chainlink uses as its currency.
+And so when we want to ask chainlink for something, we have to pay it for its services using LINK. 
+And the way we get LINK is buy paying for it with fiat. Or by exchanging other types of crypto or tokens, 
+Or by becoming a Chainlink node and mining some more link. Presumably Chainlink could just create 
+more tokens too? Not sure how that system works. 
+
+From the internet: How Many Chainlink (LINK) Coins Are There in Circulation? During the initial coin 
+offering (ICO) for LINK in September 2017, Chainlink announced a total and maximum supply of 1,000,000,000 
+LINK tokens. The current supply is about 453,509,553 LINK tokens, or about 45% of the total supply, as of 
+end-September 2021.
+
+
+
+__init__.py
+
+
+
+UNIT TEST 
+tests for particular things. Like if a particular function in a script is acting as expected.
+
+
+INTEGRATION TEST 
+tests for more holistic/cross script things. like if the program at large is acting as expected.
+
+
+
+EVENT
+Events are pieces of data executed in the blockchain and stored in the blockchain but are not 
+accessible by any smart contracts. They're kind of like the print lines of the blockchain. 
+Events are much more gas efficient than using a storage variable. 
+
+
+Conftest.py
+External plugin loading: conftest.py is used to import external plugins or modules. By defining
+the following global variable, pytest will load the module and make it available for its test. 
+Plugins are generally files defined in your project or other modules which might be needed in your 
+tests.
+
+
+
+LESSON 8
+
+CHAINLINK-MIX
+Can just use the chainlink-mix repository to get all the boilerplate unit tests, mock contracts, general contracts
+(including some that can help us work with API calls), interfaces, scripts (like helpful_scripts), things etc. 
+You can just do: `brownie bake chainlink-mix` in a new direcotry, and then `cd chainlink` and `brownie test` to 
+get started and run some tests just as an example.
