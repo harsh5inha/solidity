@@ -28,8 +28,7 @@ FILE STRUCTURE
 
     C. AdvancedCollectible.sol - This is an NFT contract (ERC721). It's called Dogie, with symbol DOG. It has a createCollectible() function which, when called, requests a random number from Chainlink to pick one of our three dog pictures at random and then mints a new token for the msg.sender (there's no tokenURI yet though). However we do store which dog picture the token should map to. When the setTokenURI() function is called, we map the tokenID to the inputted tokenURI (however only the token owner is able to call this functin). So to summarize, when we deploy this contract, we deploy an NFT contract. And then we have two functions stored on contract which can be called in conjunction to pick one of our three dog images at random and mint a token which can be claimed by the user (and only the user) which corresponds to that image and metadata on IPFS, if we have our own IPFS node spun up. If not we can use the upload_to_pinata.py script to get our image and metadata pinned to IPFS by Pinata (a third party).
 
-    D. SimpleCollectible.sol - This is an NFT contract (ERC721). It's called Doggy, with symbol DOG. It has a createCollectible() funciton which, when called, mints a token 
-    for the caller and sets the tokenURI to whatever they input when calling the function.
+    D. SimpleCollectible.sol - This is an NFT contract (ERC721). It's called Doggy, with symbol DOG. It has a createCollectible() funciton which, when called, mints a token for the caller and sets the tokenURI to whatever they input when calling the function.
 
 2. IMG
     A-C. Three locally stored images of dogs. Nothing crazy here.

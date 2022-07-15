@@ -1,0 +1,39 @@
+Three ways to update a smart contract once it's deployed. 
+
+1. You parameterize it so that you can always update some variable in the contract in the future.
+
+2. You just create a new contract that nothing to do with the first and convince everyone to just start using the new contract address. 
+This isn't great because old projets won't work anymore unless they get linked up to the new address. But also this is generally the truest 
+way to update a contract according to blockchain values of immutability. But also if this is an ERC20 or something, you'll have to have a way 
+to transfer the address to token mappings over to the new contract address etc.
+
+3. Proxies. We basically create a contract (called a proxy contract) that just implements the functionality of other contracts (called 
+implementation contracts) via a "delegateCall()" function, which is a low level function that simply runs the functionality of a different 
+contract within the proxy contract. So basically, when the admin wants to update a contract, they can just create a new implementation contract 
+and have the proxy just point to the new address. You'll just need to make sure that your implementation contracts have the code already included 
+such that they're robust to being upgraded in the future. Pretty lightweight way of updating contracts. All storage variables actually stay on the proxy 
+contract, so that doesn't need to be updated every time. Some say this is the truest way to upgrade a contract according to immutability principles, 
+but others argue method 2 is more true. 
+
+
+Two things to note for Proxies. 
+A. Storage Clashes: 
+B. Functin Selector Clashes: 
+
+
+Admin functions are functions which can only be called by the admin. Whether a DAO or a singular address. 
+Implementation function are those that can be called by non-admins. 
+
+So if you create a new defi protocol as an admin but want to call an implementation function, you'll have to generate a new address to actually interact 
+with the protocol. Bc otherwise you'll be an admin. 
+
+
+
+
+If we actually made the contract from the lesson I think we'd end up deploying an implementation contract called a "box", a proxy contract, and then we'd 
+deploy a new implementation contract and have the proxy now point to it instead of the first implementation contract. Bascally, it just walks us through 
+how to deploy a proxy contract and how to actually update teh implementation contract and then repoint the proxy to the new contract. 
+
+
+We've decided to stop actually making the contracts though because I think I've gotten the hang of cryto development now, and these contracts take a long 
+time to finish. I finished around 70% of the course though fully. Now I'm just skimming until the end.

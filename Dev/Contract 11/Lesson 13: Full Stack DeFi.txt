@@ -1,0 +1,60 @@
+Lesson 13
+This is a full stack defi app. So that includes a front end built via React.  Users are going to be able to connect 
+their wallets and then stake or deposit some tokens into our contract. Users will be able to stake wETH, FAU (a test 
+version of DAI), or DAPP (a reward token that our platform gives users as an incentive to stake on our platform). 
+Users will also be able to unstake their tokens (although the course doesn't go over the front end construction
+for this, just the back end).  We'll use ChainLink pricefeeds to determine the value of all our tokens as usual. We'll 
+provide DAPP tokens to all users who have staked, proactively via on our back end. So really a prettys imple Dapp, but 
+it's full stack including the front end and linking up the wallet, so pretty useful to see the full flow I reckon.
+
+
+This project has five main functionalities that we need to create. We do all this pretty quickly from 12:52:40 to 13:48:20:
+1. Ability for users to stake tokens
+2. Ability for users to unstake tokens
+3. Ability to issue tokens to stakers
+4. Ability to add to a list of approved tokens
+5. Ability to get the value of tokens from a live pricefeed
+
+
+Then we talk about writing tests from 13:48:20 to 14:08:00.
+There are a bunch of tests for this project. We walk through creating some of them in the lesson, but not all of them
+just for brevity. The full list is included in the GitHub. 
+
+
+Front-End development stuff starts at 14:08:00
+- We are building a React App, and we're using the useDApp framework to integrate with web3 easily. 
+- Walks us through how to implement the "connect your wallet" functionality first. (Ends at 14:28:00)
+- We use material-UI for styling our app etc. So there is no CSS. Formatting our "Connect your wallet" button ends at 14:32:00
+- Then we figure out how to get our config file details into our React frontend, finishes at 14:42:40. I think?
+- This Material-UI package seems to be really powerfula nd simple and useful for React apps, maybe I should use it for any future projects
+- etc. etc. 
+
+
+So yeah, this project walks us through first creating the back end functionality of allowing users to stake particular tokens, etc. 
+But it also walks us through hwo to cretae an attractive front end for the users to interact with. From pop up boxes to back ground 
+colors, etc. All teh important stuff. It's been great to see an end to end product come together. Ultimately, it's all just cogs in 
+a large machine that links every part together to run as a whole and produce some end product. I can build these apps. I understand 
+how crypto fintech software works under the hood, and how to create it. That's pretty powerful stuff and a long way from home. I 
+kind of want to actually go make the thing, but that will take some time, so not right now.
+
+
+Actually, in the future I might consider actually going back and doing this lesson end to end. I Think by the end of it I'd get way better 
+at React development, and I'd really be able to create a full stack React Web3 app. It'd take time definitely, maybe 2 full days. But 
+I'd definitely build some muscle memory out of it. If that's something I want to do. 
+
+Woo!
+
+
+
+Lesson 14: CLOSING AND SUMMARY 
+Before publishing to a live net, you need to get an audit. Basically when someone else peer reviews your code to make sure everythign is safe and checks out.
+There are some links in their repo about Audits.
+
+Oracle Attacks. Don't really need to worry about these if you use a decentralized oracle netowork. Like Chainlink etc. Generally oracle manipulation occurs with 
+a centralized oracle.
+
+Reentry attacks. When an external contract you call from your app might have permissions on some of your functions that you might not want it to have?
+
+Ethernaut. DamnVulnerableDefi. <- games that can show you some more things about security?
+
+"You'll learn by building and tinkering." 

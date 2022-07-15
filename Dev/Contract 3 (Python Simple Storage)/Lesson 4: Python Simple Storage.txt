@@ -1,4 +1,4 @@
-In contract 1.3 we're making a contract that 
+In contract 3 we're making a contract that 
 1. deploys to a local Ganache Instance
 2. checks the value of a variable
 3. updates that value through another transaction

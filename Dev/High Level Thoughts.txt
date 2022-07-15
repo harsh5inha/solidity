@@ -1,0 +1,96 @@
+PHIOSOPHY
+I mean if we go back to first principles, what's the point of any of this. It's functionally a computer. The computer is:
+1. Distributed. So it runs on many different machines all around the world. Even if one node goes down, there's no harm to the overall system. It can catch up once it comes back online.
+2. Enormous. Many many nodes. And tons of compute power is spent on the computer.
+3. 
+
+, and it's enormous, global, decentralized, it's strong in the sense that you need consensus to beat it, 
+and it's financialy impossble to beat it. And you can't cheat it, because the cryptography is too strong. 
+And we'll adapt to the quantum world with quantum security. So it's distributed, doesn't require trust, 
+public, potentially anonymous.
+
+What about the currency aspect? 
+
+
+
+
+
+
+
+like what's even the value add of Bitcoin? It 
+just allows finance to be decentralized. Why is that good? Because there's so central bank?
+Idk, is that good? I feel like good monetary policy can help economies.
+
+What are the other value adds of bitcoin?
+It's public? 
+
+What about Ethereum?
+
+
+
+
+So like Robinhood doesn't actually have a wallet so you don't actually own the coins. So you 
+could make fun of people for that, but also like there are tons of Gold ETFs where you don't actually own 
+the gold and it's not clear why anyone values gold. So maybe don't make fun of them? 
+And also you don't need to understand how the fed works to have a bank account. But that said you 
+probably do need to understand how it works to be really good at the financial markets. But do you to be good at 
+business? Maybe at enough scale sure. So what's the parralell here. Do you need to learn all this shit actually?
+Well I'm doing this based off my curiosity heuristic so whatever. 
+
+
+
+SIMPLE EXPLANATION
+Ultimately accounts function as units of three numbers, which are mathematically linked: private key, public key, address.
+If there's something you are forgetting or don't understand, don't worry, you can figure it out just by reading this doc. 
+If there's some minutia which you don't understand, then the simplset explanaition is probably pretty close to the truth. 
+You've already learned all this stuff, there is no magic. These are machines doing basic math.
+
+
+
+
+
+
+
+
+
+
+
+The main value add of all of this truly seems to be creating a web/internet/digital metaverse in which there is no 
+centralization. Humanity can build collectively. Everything on chain. 
+
+
+
+GENERAL 
+Above all, just remember that code and apps and CS and allt his stuff, is ultimately just a bunch of lego 
+blocks that all depend on each other. And when you dig down deep enough, all that's happening is some 
+switches are being fliipped on and off. ANd all you're trying to do is flip the right switches in the 
+right order. That's all it is. Don't get overwhelmed by semi colons. It's all just 1 + 1 = 2 at the end 
+of the day. 
+
+
+
+
+
+
+Crypto at large I think has four main selling points for me:
+1. The tech is remarkable and does have the potential to be revolutionary (mostly talking ab the hashing and PoS algorithms)
+2. The energy, investment, and talent in the space is also remarkable
+3. It provides the ability to build things in a way that doesn't have to deal with vestigial problems in current industries
+4. Decentralization I think does have the power to have large impact on society if we can figure it out
+
+If I decide to build here, points number 1 and 4 will be the reason why I think. A future in which we are all droids, plugged 
+in to a larger system. Where DAOs control what happens. Why couldn't we do this in a web2 world? Because now we truly own 
+ourselves. COmmunities can truly own themselves. BUt to do that, communities will need nukes, automated ways to make decisions 
+on whether to fire them, etc.
+
+
+
+
+
+Don't get overwhelmed. Don't get overwhelmed. Don't get overwhelmed. All code is just 2 + 2. If you don't get it, it's because 
+you're not digging deep enough to see where it becomes 2 + 2, you're at too abstracted of a level to see it. But in the end of 
+the day, you can understand any code if you need to. It's just a matter if you want to spend the time to. 
+
+Start with the basics. What do you actually need to accomplish. Don't boil the ocean.
+
+That's a weakness of mine. I don't ship teh skateobard. I try to build the car first. 
